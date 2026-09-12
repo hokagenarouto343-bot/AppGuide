@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f4e">
+<title>🌿 App Guide</title>
+<style>
+:root {
+  --bg-color: #eef8f2;
+  --text-color: #123d2b;
+  --card-bg: #ffffff;
+  --header-bg: linear-gradient(135deg,#075a38,#16a866);
+  --desc-color: #71867b;
+  --label-bg: #dff4e8;
+  --banner-bg: #fff3cd;
+  --banner-text: #856404;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121815;
+  --text-color: #e0ece5;
+  --card-bg: #1c2420;
+  --header-bg: linear-gradient(135deg,#053823,#0e6b41);
+  --desc-color: #9cb0a5;
+  --label-bg: #193829;
+  --banner-bg: #2c2512;
+  --banner-text: #ffe08a;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);transition:0.3s}
+header{background:var(--header-bg);color:#fff;padding:25px 20px 35px;border-radius:0 0 32px 32px}
+.logo-container{display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:auto;flex-wrap:wrap;gap:10px}
+.logo{font-size:28px;font-weight:800}.sub{margin-top:6px;color:#d9f8e8}
+.controls{display:flex;gap:8px;align-items:center}
+.theme-toggle, .lang-select{background:rgba(255,255,255,0.2);border:0;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+.lang-select option{background:#075a38;color:#fff}
+.dev-banner{background:var(--banner-bg);color:var(--banner-text);border:1px solid rgba(0,0,0,0.1);padding:12px;border-radius:12px;margin-bottom:18px;font-size:13px;text-align:center;font-weight:bold}
+main{max-width:900px;margin:auto;padding:20px}h2{font-size:21px}
+.search{width:100%;padding:15px;border:0;border-radius:15px;font-size:16px;margin-bottom:18px;background:var(--card-bg);color:var(--text-color)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.category{background:var(--card-bg);border:0;border-radius:18px;padding:18px;text-align:initial;box-shadow:0 4px 15px #0001;cursor:pointer;color:var(--text-color);width:100%}
+.icon{font-size:30px}.title{font-weight:bold;font-size:16px;margin-top:8px}.small,.desc{font-size:12px;color:var(--desc-color);margin-top:6px}
+.hidden{display:none}.back{border:0;background:#087f4e;color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.label{text-align:center;font-weight:bold;background:var(--label-bg);padding:11px;border-radius:13px;margin-bottom:10px;color:var(--text-color)}
+.card{background:var(--card-bg);border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 3px 12px #0001;color:var(--text-color)}
+.app{font-weight:bold;font-size:16px}.desc{line-height:1.6}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
+.tag{display:inline-block;background:#edf7f1;color:#087f4e;border-radius:8px;padding:4px 8px;font-size:11px}
+.cat-tag{display:inline-block;background:rgba(8,127,78,0.15);color:var(--text-color);border-radius:8px;padding:4px 8px;font-size:11px;font-weight:bold}
+.visit{display:block;text-align:center;text-decoration:none;background:#087f4e;color:white;border-radius:10px;padding:9px;font-size:13px}
+.note{background:var(--card-bg);border-radius:14px;padding:12px;font-size:12px;color:var(--desc-color);margin-bottom:15px}
+footer{text-align:center;color:var(--desc-color);font-size:12px;padding:25px}
+@media(max-width:650px){.columns{grid-template-columns:1fr;gap:7px}.category{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo-container">
+  <div>
+    <div class="logo">🌿 App Guide</div>
+    <div class="sub" id="subTitle">تطبيقات مقسمة حسب أنظمة التشغيل</div>
+  </div>
+  <div class="controls">
+    <select id="langSelect" class="lang-select">
+      <option value="ar">العربية 🇸🇦</option>
+      <option value="en">English 🇬🇧</option>
+      <option value="fr">Français 🇫🇷</option>
+    </select>
+    <button id="themeBtn" class="theme-toggle">🌙</button>
+  </div>
+</div>
+</header>
+<main>
+<div class="dev-banner" id="devBanner">⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.</div>
+<section id="homePage">
+<h2 id="selectOsTitle">اختر نظام التشغيل</h2>
+<input id="searchBox" class="search" placeholder="🔎 ابحث عن نظام تشغيل...">
+<div id="categoryList" class="grid"></div>
+</section>
+<section id="detailsPage" class="hidden">
+<button id="backButton" class="back">‹ العودة للأنظمة</button>
+<h2 id="sectionTitle"></h2>
+<div class="note" id="noteText">🔗 الروابط توجه إلى المواقع الرسمية للتطبيقات. (نسخة تجريبية قيد التطوير)</div>
+<div class="columns">
+<div><div class="label" id="freeLabel">🆓 10 تطبيقات مجانية</div><div id="freeList"></div></div>
+<div><div class="label" id="paidLabel">💎 10 تطبيقات مدفوعة / اشتراك</div><div id="paidList"></div></div>
+</div>
+</section>
+<footer id="footerText">App Guide — نسخة تجريبية قيد التطوير</footer>
+</main>
+<script>
+let currentLang = "ar";
+
+const uiTexts = {
+  ar: {
+    sub: "تطبيقات مقسمة حسب أنظمة التشغيل",
+    banner: "⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.",
+    selectOs: "اختر نظام التشغيل",
+    searchPh: "🔎 ابحث عن نظام تشغيل...",
+    back: "‹ العودة للأنظمة",
+    note: "🔗 الروابط توجه إلى المواقع الرسمية للتطبيقات. (نسخة تجريبية قيد التطوير)",
+    freeLabel: "🆓 10 تطبيقات مجانية",
+    paidLabel: "💎 10 تطبيقات مدفوعة / اشتراك",
+    footer: "App Guide — نسخة تجريبية قيد التطوير",
+    visit: "زيارة الموقع الرسمي ↗",
+    official: "رابط رسمي",
+    appsCount: "20 تطبيقًا مخصصًا"
+  },
+  en: {
+    sub: "Apps Categorized by Operating System",
+    banner: "⚠️ Notice: This platform is still a beta version under continuous development.",
+    selectOs: "Select Operating System",
+    searchPh: "🔎 Search OS...",
+    back: "‹ Back to OS List",
+    note: "🔗 Links direct to the official websites. (Beta version)",
+    freeLabel: "🆓 10 Free Apps",
+    paidLabel: "💎 10 Paid / Subscription Apps",
+    footer: "App Guide — Beta Version",
+    visit: "Visit Official Site ↗",
+    official: "Official Link",
+    appsCount: "20 Curated Apps"
+  },
+  fr: {
+    sub: "Applications classées par système d'exploitation",
+    banner: "⚠️ Remarque : Cette plateforme est encore une version bêta en développement.",
+    selectOs: "Sélectionnez le système d'exploitation",
+    searchPh: "🔎 Rechercher un système...",
+    back: "‹ Retour aux systèmes",
+    note: "🔗 Les liens redirigent vers les sites officiels. (Version bêta)",
+    freeLabel: "🆓 10 Applications Gratuites",
+    paidLabel: "💎 10 Applications Payantes",
+    footer: "App Guide — Version Bêta",
+    visit: "Visiter le site officiel ↗",
+    official: "Lien Officiel",
+    appsCount: "20 Apps Sélectionnées"
+  }
+};
+
+const osCategories = {
+  ar: [
+    {icon:"🤖",title:"تطبيقات أندرويد (Android)",free:[
+      ["CapCut Mobile","أداة تحرير فيديو ممتازة وسهلة الاستخدام.","https://www.capcut.com/","مونتاج"],
+      ["VN Editor","محرر فيديو احترافي بدون علامة مائية.","https://www.vlognow.me/","مونتاج"],
+      ["Snapseed","أقوى تطبيق تعديل صور مجاني من قوقل.","https://snapseed.online/","تصميم صور"],
+      ["BandLab","استوديو كامل لتسجيل وهندسة الصوت.","https://www.bandlab.com/","صوتيات"],
+      ["Voloco (Free)","تعديل الصوت وضبط النبرات تلقائياً.","https://voloco.com/","صوتيات"],
+      ["InShot (Free)","تجميع وفيديوهات سريعة للتواصل الاجتماعي.","https://inshot.com/","مونتاج"],
+      ["Canva App","تصميم صور مصغرة وبوسترات بسهولة.","https://www.canva.com/","تصميم صور"],
+      ["ChatGPT Mobile","المساعد الذكي لكتابة النصوص والإجابات.","https://chatgpt.com/","ذكاء اصطناعي"],
+      ["Google Gemini","تطبيق الذكاء الاصطناعي الخاص بأندرويد.","https://gemini.google.com/","ذكاء اصطناعي"],
+      ["Tubi TV","مشاهدة أفلام ومسلسلات مجاناً بشكل قانوني.","https://tubitv.com/","ترفيه"]
+    ],paid:[
+      ["LumaFusion","أفضل برنامج مونتاج احترافي للهواتف.","https://luma-touch.com/lumafusion/","مونتاج"],
+      ["PowerDirector Pro","محرر فيديو قوي ومؤثرات سينمائية.","https://www.cyberlink.com/products/powerdirector-video-editing-software/overview_en_US.html","مونتاج"],
+      ["Alight Motion Pro","تطبيق موشن جرافيك وتحريك مخصص للموبايل.","https://alightmotion.com/","مونتاج وتصميم"],
+      ["Lightroom Mobile Pro","أداة معالجة الألوان الاحترافية للصور.","https://www.adobe.com/products/photoshop-lightroom.html","تصميم صور"],
+      ["VoiceMod Pro Mobile","تغيير وتشكيل الصوت والمؤثرات الصوتية.","https://www.voicemod.net/","صوتيات"],
+      ["Netflix App","منصة الأفلام والمسلسلات الشهيرة عالمياً.","https://www.netflix.com/","ترفيه"],
+      ["Shahid VIP","أكبر مكتبة للمحتوى والمسلسلات العربية.","https://shahid.mbc.net/","ترفيه"],
+      ["OSN+","بث حصري لأهم الأفلام والبرامج العالمية.","https://osnplus.com/","ترفيه"],
+      ["ChatGPT Plus App","وصول لنماذج الذكاء الاصطناعي الأحدث.","https://chatgpt.com/","ذكاء اصطناعي"],
+      ["Filmora Mobile Pro","تعديل فيديو احترافي بسهولة للمبدعين.","https://filmora.wondershare.com/","مونتاج"]
+    ]},
+    {icon:"🍎",title:"تطبيقات آيفون وآيباد (iOS)",free:[
+      ["CapCut iOS","أداة المونتاج الأولى لهواتف آيفون.","https://www.capcut.com/","مونتاج"],
+      ["GarageBand","استوديو صناعة وصوتيات مجاني من أبل.","https://www.apple.com/ios/garageband/","صوتيات"],
+      ["Canva iOS","تصميم جرافيك وصور مصغرة بسرعة.","https://www.canva.com/","تصميم صور"],
+      ["Snapseed iOS","تعديل صور واحترافي على الآيفون.","https://snapseed.online/","تصميم صور"],
+      ["Claude iOS","تطبيق الذكاء الاصطناعي الممتاز لكتابة المحتوى.","https://claude.ai/","ذكاء اصطناعي"],
+      ["Perplexity AI","محرك بحث ذكي يجيب على أسئلتك مباشرة.","https://www.perplexity.ai/","ذكاء اصطناعي"],
+      ["YouTube App","أكبر منصة مشاهدة فيديو على الآيفون.","https://www.youtube.com/","ترفيه"],
+      ["Adobe Express","صانع تصاميم وفيديوهات قصيرة مجاني.","https://www.adobe.com/express/","تصميم صور"],
+      ["VN Video Editor","محرر فيديو سلس وخفيف بدون علامة مائية.","https://www.vlognow.me/","مونتاج"],
+      ["Voloco iOS","معالجة وتعديل الصوت بسرعة.","https://voloco.com/","صوتيات"]
+    ],paid:[
+      ["Procreate","أشهر تطبيق رسم وتصميم رقمي للآيباد.","https://procreate.com/","تصميم صور"],
+      ["LumaFusion iOS","المونتاج المتقدم رقم 1 للأجهزة الذكية.","https://luma-touch.com/lumafusion/","مونتاج"],
+      ["Final Cut Pro iPad","برنامج المونتاج الاحترافي المخصص للآيباد.","https://www.apple.com/final-cut-pro-for-ipad/","مونتاج"],
+      ["Logic Pro iPad","استوديو هندسة صوت وموسيقى كامل من أبل.","https://www.apple.com/logic-pro-for-ipad/","صوتيات"],
+      ["Affinity Photo iOS","بديل فوتوشوب كامل ومحترف للآيباد.","https://affinity.serif.com/","تصميم صور"],
+      ["Pixelmator Photo","تعديل ألوان الصور بالذكاء الاصطناعي.","https://www.pixelmator.com/photo/","تصميم صور"],
+      ["Disney+ iOS","مشاهدة أفلام ومسلسلات ديزني ومارفل.","https://www.disneyplus.com/","ترفيه"],
+      ["Apple TV+","خدمة بث الأفلام والعروض الحصرية من أبل.","https://tv.apple.com/","ترفيه"],
+      ["Runway iOS","صناعة وتعديل الفيديو بالذكاء الاصطناعي.","https://runwayml.com/","ذكاء اصطناعي"],
+      ["Filmora iOS Pro","تحرير وتحسين الفيديو بخصائص مدفوعة.","https://filmora.wondershare.com/","مونتاج"]
+    ]},
+    {icon:"🪟",title:"برامج ويندوز (Windows)",free:[
+      ["DaVinci Resolve","أقوى برنامج مونتاج سينمائي وتعديل ألوان.","https://www.blackmagicdesign.com/products/davinciresolve","مونتاج"],
+      ["Audacity","أشهر برنامج هندسة وتنقية صوت مجاني.","https://www.audacityteam.org/","صوتيات"],
+      ["GIMP","برنامج تعديل صور ورسومات مفتوح المصدر.","https://www.gimp.org/","تصميم صور"],
+      ["Shotcut","برنامج تحرير فيديو خفيف وسهل.","https://shotcut.org/","مونتاج"],
+      ["Clipchamp","محرر الفيديو المجاني المدمج في ويندوز.","https://clipchamp.com/","مونتاج"],
+      ["Inkscape","برنامج رسم وتصميم الفكتور المجاني.","https://inkscape.org/","تصميم صور"],
+      ["OpenShot","برنامج مونتاج فيديو مفتوح المصدر للمبتدئين.","https://www.openshot.org/","مونتاج"],
+      ["VoiceMod (Free)","تعديل الصوت المباشر للألعاب والدردشة.","https://www.voicemod.net/","صوتيات"],
+      ["Cakewalk","برنامج إنتاج موسيقى وصوت احترافي مجاني.","https://www.bandlab.com/products/cakewalk","صوتيات"],
+      ["Ocenaudio","محرر صوتي سريع وسهل الاستخدام.","https://www.ocenaudio.com/","صوتيات"]
+    ],paid:[
+      ["Adobe Premiere Pro","البرنامج الأول عالمياً في مونتاج الفيديو.","https://www.adobe.com/products/premiere.html","مونتاج"],
+      ["Adobe Photoshop","أشهر برنامج تعديل وصناعة صور في العالم.","https://www.adobe.com/products/photoshop.html","تصميم صور"],
+      ["Adobe After Effects","البرنامج القياسي للموشن جرافيك والتأثيرات.","https://www.adobe.com/products/aftereffects.html","مونتاج"],
+      ["FL Studio","أشهر استوديو لصناعة وتوزيع الموسيقى.","https://www.image-line.com/","صوتيات"],
+      ["iZotope RX","أقوى حزمة احترافية لتنقية وهندسة الصوت.","https://www.izotope.com/","صوتيات"],
+      ["CorelDRAW","برنامج التصميم الجرافيكي المتقدم.","https://www.coreldraw.com/","تصميم صور"],
+      ["Vegas Pro","برنامج مونتاج وتحرير فيديو سينمائي.","https://www.vegascreativesoftware.com/","مونتاج"],
+      ["Camtasia Pro","تسجيل الشاشة وإنشاء الشروحات المتقدمة.","https://www.techsmith.com/camtasia.html","مونتاج"],
+      ["Adobe Audition","برنامج أدوبي المعتمد للهندسة الصوتية.","https://www.adobe.com/products/audition.html","صوتيات"],
+      ["Topaz Gigapixel AI","رفع دقة الصور وجودتها بالذكاء الاصطناعي.","https://www.topazlabs.com/gigapixel-ai","تصميم صور"]
+    ]},
+    {icon:"💻",title:"برامج ماك (macOS)",free:[
+      ["DaVinci Resolve Mac","برنامج مونتاج سينمائي عالي الأداء.","https://www.blackmagicdesign.com/products/davinciresolve","مونتاج"],
+      ["iMovie","محرر فيديو مجاني وسريع مدمج من أبل.","https://www.apple.com/imovie/","مونتاج"],
+      ["Audacity Mac","برنامج التسجيل والتنقية الصوتية.","https://www.audacityteam.org/","صوتيات"],
+      ["GIMP Mac","تعديل الصور بديل فوتوشوب المجاني.","https://www.gimp.org/","تصميم صور"],
+      ["Shotcut Mac","محرر فيديو مجاني ومفتوح المصدر.","https://shotcut.org/","مونتاج"],
+      ["CapCut Mac","نسخة الكمبيوتر المخصصة لأجهزة ماك.","https://www.capcut.com/","مونتاج"],
+      ["Inkscape Mac","برنامج التصميم الشعاعي (Vector).","https://inkscape.org/","تصميم صور"],
+      ["HandBrake","أداة مجانية للتحويل والضغط الذكي للفيديو.","https://handbrake.fr/","أدوات فيديو"],
+      ["WavePad Mac","تسجيل وتعديل المؤثرات الصوتية مجاناً.","https://www.nch.com.au/wavepad/index.html","صوتيات"],
+      ["Krita","برنامج مجاني متقدم للرسم الرقمي.","https://krita.org/","تصميم صور"]
+    ],paid:[
+      ["Final Cut Pro","برنامج المونتاج الأساسي والأسرع لأجهزة ماك.","https://www.apple.com/final-cut-pro/","مونتاج"],
+      ["Logic Pro","أقوى استوديو إنتاج وهندسة صوتية من أبل.","https://www.apple.com/logic-pro/","صوتيات"],
+      ["Pixelmator Pro","تطبيق تصميم وجرافيك ممتاز ومخصص لماك.","https://www.pixelmator.com/pro/","تصميم صور"],
+      ["Affinity Photo Mac","محرر صور احترافي يعمل بشراء لمرة واحدة.","https://affinity.serif.com/","تصميم صور"],
+      ["Adobe Premiere Mac","نسخة ماك الاحترافية لتحرير الفيديو.","https://www.adobe.com/products/premiere.html","مونتاج"],
+      ["ScreenFlow","أفضل برنامج لتسجيل الشاشة والمونتاج على ماك.","https://www.telestream.net/screenflow/","مونتاج"],
+      ["CleanMyMac X","أداة تنظيف وتسريع نظام ماك الشهيرة.","https://macpaw.com/cleanmymac","أدوات نظام"],
+      ["Luminar Neo","محرر صور يعتمد بالكامل على الذكاء الاصطناعي.","https://skylum.com/luminar","تصميم صور"],
+      ["Descript Mac","تعديل الفيديو والصوت عبر تفريغ النصوص.","https://www.descript.com/","مونتاج وصوت"],
+      ["Pro Tools Mac","البرنامج القياسي في استوديوهات الصوت العالمية.","https://www.avid.com/pro-tools","صوتيات"]
+    ]},
+    {icon:"🌐",title:"تطبيقات المتصفح (Web/Cloud)",free:[
+      ["Photopea","أقوى بديل فوتوشوب مجاني داخل المتصفح.","https://www.photopea.com/","تصميم صور"],
+      ["Canva Web","تصميم الصور والمستندات أونلاين مجاناً.","https://www.canva.com/","تصميم صور"],
+      ["ChatGPT Web","المساعد الذكي الأبرز للعمل والكتابة.","https://chatgpt.com/","ذكاء اصطناعي"],
+      ["Adobe Podcast Enhance","تصفية وتنقية الصوت مجاناً بالذكاء الاصطناعي.","https://podcast.adobe.com/enhance","صوتيات"],
+      ["Pixlr Web","محرر صور خفيف وسريع أونلاين.","https://pixlr.com/","تصميم صور"],
+      ["Veed.io Free","مونتاج وتعديل الفيديو مباشرة عبر الإنترنت.","https://www.veed.io/","مونتاج"],
+      ["Microsoft Copilot","توليد صور ونصوص بالذكاء الاصطناعي.","https://copilot.microsoft.com/","ذكاء اصطناعي"],
+      ["Ideogram","توليد صور وتصاميم نصوص عالية الدقة.","https://ideogram.ai/","ذكاء اصطناعي"],
+      ["Lalal.ai Free","فصل صوت المغني عن الموسيقى أونلاين.","https://www.lalal.ai/","صوتيات"],
+      ["Suno AI Free","إنشاء وتوليد أغاني وموسيقى كاملة.","https://suno.com/","ذكاء اصطناعي"]
+    ],paid:[
+      ["Midjourney Web","توليد أرقى الصور الفنية بالذكاء الاصطناعي.","https://www.midjourney.com/","ذكاء اصطناعي"],
+      ["ChatGPT Plus Web","الوصول لأحدث نماذج الذكاء الاصطناعي أونلاين.","https://chatgpt.com/","ذكاء اصطناعي"],
+      ["ElevenLabs Pro","تحويل النص إلى صوت بشري واقعي جداً.","https://elevenlabs.io/","صوتيات وذكاء اصطناعي"],
+      ["Runway Gen-2","توليد فيديوهات من النصوص على السحابة.","https://runwayml.com/","ذكاء اصطناعي"],
+      ["HeyGen","صناعة فيديوهات بمتحدثين افتراضيين وترجمة.","https://www.heygen.com/","ذكاء اصطناعي"],
+      ["Synthesia","إنشاء فيديوهات تدريبية بذكاء اصطناعي.","https://www.synthesia.io/","ذكاء اصطناعي"],
+      ["Jasper AI","مساعد كتابة المقالات والمحتوى التسويقي.","https://www.jasper.ai/","ذكاء اصطناعي"],
+      ["Adobe Firefly Pro","توليد وتعديل الصور للاستخدام التجاري.","https://firefly.adobe.com/","تصميم صور"],
+      ["Figma Pro","أشهر منصة لتصميم واجهات المستخدم أونلاين.","https://www.figma.com/","تصميم واجهات"],
+      ["Remove.bg Pro","إزالة خلفيات الصور بدقة عالية جداً.","https://www.remove.bg/","تصميم صور"]
+    ]}
+  ],
+  en: [
+    {icon:"🤖",title:"Android Apps",free:[
+      ["CapCut Mobile","Easy video editing tool for mobile.","https://www.capcut.com/","Editing"],
+      ["VN Editor","Professional video editor with no watermark.","https://www.vlognow.me/","Editing"],
+      ["Snapseed","Powerful free photo editing tool by Google.","https://snapseed.online/","Photo Design"],
+      ["BandLab","Full studio for audio recording and mixing.","https://www.bandlab.com/","Audio"],
+      ["Voloco (Free)","Audio processing and voice tuning app.","https://voloco.com/","Audio"],
+      ["InShot (Free)","Quick video maker for social media.","https://inshot.com/","Editing"],
+      ["Canva App","Design thumbnails and posters easily.","https://www.canva.com/","Photo Design"],
+      ["ChatGPT Mobile","AI Assistant for writing and answers.","https://chatgpt.com/","AI Tools"],
+      ["Google Gemini","Official AI assistant application by Google.","https://gemini.google.com/","AI Tools"],
+      ["Tubi TV","Stream free legal movies and TV shows.","https://tubitv.com/","Streaming"]
+    ],paid:[
+      ["LumaFusion","Top professional video editor for mobile.","https://luma-touch.com/lumafusion/","Editing"],
+      ["PowerDirector Pro","Powerful editor with cinematic effects.","https://www.cyberlink.com/products/powerdirector-video-editing-software/overview_en_US.html","Editing"],
+      ["Alight Motion Pro","Motion graphics and animation app.","https://alightmotion.com/","Graphics & Editing"],
+      ["Lightroom Mobile Pro","Professional color grading for photos.","https://www.adobe.com/products/photoshop-lightroom.html","Photo Design"],
+      ["VoiceMod Pro Mobile","Real-time voice changer and soundboard.","https://www.voicemod.net/","Audio"],
+      ["Netflix App","World's top streaming service for movies.","https://www.netflix.com/","Streaming"],
+      ["Shahid VIP","Largest library for Arabic shows and movies.","https://shahid.mbc.net/","Streaming"],
+      ["OSN+","Exclusive streaming for top global content.","https://osnplus.com/","Streaming"],
+      ["ChatGPT Plus App","Access to advanced AI models on mobile.","https://chatgpt.com/","AI Tools"],
+      ["Filmora Mobile Pro","Pro video editing made easy.","https://filmora.wondershare.com/","Editing"]
+    ]},
+    {icon:"🍎",title:"iOS Apps (iPhone & iPad)",free:[
+      ["CapCut iOS","Top video editing tool on iPhone.","https://www.capcut.com/","Editing"],
+      ["GarageBand","Free music creation studio by Apple.","https://www.apple.com/ios/garageband/","Audio"],
+      ["Canva iOS","Create graphics and thumbnails quickly.","https://www.canva.com/","Photo Design"],
+      ["Snapseed iOS","Advanced mobile photo editor.","https://snapseed.online/","Photo Design"],
+      ["Claude iOS","Excellent AI model for text and analysis.","https://claude.ai/","AI Tools"],
+      ["Perplexity AI","AI answer engine for quick research.","https://www.perplexity.ai/","AI Tools"],
+      ["YouTube App","The world's video streaming platform.","https://www.youtube.com/","Streaming"],
+      ["Adobe Express","Quick design and video creation tool.","https://www.adobe.com/express/","Photo Design"],
+      ["VN Video Editor","Smooth editor with zero watermarks.","https://www.vlognow.me/","Editing"],
+      ["Voloco iOS","Quick audio auto-tune and voice FX.","https://voloco.com/","Audio"]
+    ],paid:[
+      ["Procreate","Top digital painting app for iPad.","https://procreate.com/","Photo Design"],
+      ["LumaFusion iOS","#1 advanced video editor for iOS.","https://luma-touch.com/lumafusion/","Editing"],
+      ["Final Cut Pro iPad","Professional iPad editing software.","https://www.apple.com/final-cut-pro-for-ipad/","Editing"],
+      ["Logic Pro iPad","Complete music production suite on iPad.","https://www.apple.com/logic-pro-for-ipad/","Audio"],
+      ["Affinity Photo iOS","Full Photoshop alternative for iPad.","https://affinity.serif.com/","Photo Design"],
+      ["Pixelmator Photo","AI-powered photo enhancement app.","https://www.pixelmator.com/photo/","Photo Design"],
+      ["Disney+ iOS","Stream Disney, Marvel, and Star Wars.","https://www.disneyplus.com/","Streaming"],
+      ["Apple TV+","Original movies and shows by Apple.","https://tv.apple.com/","Streaming"],
+      ["Runway iOS","Generate AI videos directly from mobile.","https://runwayml.com/","AI Tools"],
+      ["Filmora iOS Pro","Feature-packed video editor.","https://filmora.wondershare.com/","Editing"]
+    ]},
+    {icon:"🪟",title:"Windows Software",free:[
+      ["DaVinci Resolve","Ultimate free video editor and color grader.","https://www.blackmagicdesign.com/products/davinciresolve","Editing"],
+      ["Audacity","Popular free audio editing software.","https://www.audacityteam.org/","Audio"],
+      ["GIMP","Open-source image editing software.","https://www.gimp.org/","Photo Design"],
+      ["Shotcut","Lightweight open-source video editor.","https://shotcut.org/","Editing"],
+      ["Clipchamp","Built-in Windows video editor.","https://clipchamp.com/","Editing"],
+      ["Inkscape","Free vector graphics editor.","https://inkscape.org/","Photo Design"],
+      ["OpenShot","Easy open-source video editor.","https://www.openshot.org/","Editing"],
+      ["VoiceMod (Free)","Real-time voice changer for gaming.","https://www.voicemod.net/","Audio"],
+      ["Cakewalk","Complete digital audio workstation (DAW).","https://www.bandlab.com/products/cakewalk","Audio"],
+      ["Ocenaudio","Fast and simple audio editor.","https://www.ocenaudio.com/","Audio"]
+    ],paid:[
+      ["Adobe Premiere Pro","Industry-standard video editing software.","https://www.adobe.com/products/premiere.html","Editing"],
+      ["Adobe Photoshop","World standard for photo manipulation.","https://www.adobe.com/products/photoshop.html","Photo Design"],
+      ["Adobe After Effects","VFX and motion graphics software.","https://www.adobe.com/products/aftereffects.html","Editing"],
+      ["FL Studio","Leading digital audio creation suite.","https://www.image-line.com/","Audio"],
+      ["iZotope RX","Advanced audio cleanup and repair.","https://www.izotope.com/","Audio"],
+      ["CorelDRAW","Professional vector design software.","https://www.coreldraw.com/","Photo Design"],
+      ["Vegas Pro","Cinematic video editing application.","https://www.vegascreativesoftware.com/","Editing"],
+      ["Camtasia Pro","Screen recorder and video editing.","https://www.techsmith.com/camtasia.html","Editing"],
+      ["Adobe Audition","Professional workstation for audio editing.","https://www.adobe.com/products/audition.html","Audio"],
+      ["Topaz Gigapixel AI","AI image upscaler and enhancement.","https://www.topazlabs.com/gigapixel-ai","Photo Design"]
+    ]},
+    {icon:"💻",title:"macOS Software",free:[
+      ["DaVinci Resolve Mac","High-performance video editing software.","https://www.blackmagicdesign.com/products/davinciresolve","Editing"],
+      ["iMovie","Free video editor bundled with macOS.","https://www.apple.com/imovie/","Editing"],
+      ["Audacity Mac","Audio recorder and editor for Mac.","https://www.audacityteam.org/","Audio"],
+      ["GIMP Mac","Free image design software.","https://www.gimp.org/","Photo Design"],
+      ["Shotcut Mac","Free open-source video software.","https://shotcut.org/","Editing"],
+      ["CapCut Mac","Desktop edition of CapCut for Mac.","https://www.capcut.com/","Editing"],
+      ["Inkscape Mac","Vector drawing tool for macOS.","https://inkscape.org/","Photo Design"],
+      ["HandBrake","Open-source video transcoder.","https://handbrake.fr/","Video Tools"],
+      ["WavePad Mac","Audio editing and recording software.","https://www.nch.com.au/wavepad/index.html","Audio"],
+      ["Krita","Free digital painting software.","https://krita.org/","Photo Design"]
+    ],paid:[
+      ["Final Cut Pro","Apple's flagship video editing app.","https://www.apple.com/final-cut-pro/","Editing"],
+      ["Logic Pro","Apple's professional audio workstation.","https://www.apple.com/logic-pro/","Audio"],
+      ["Pixelmator Pro","Image editor built natively for Mac.","https://www.pixelmator.com/pro/","Photo Design"],
+      ["Affinity Photo Mac","One-time purchase Photoshop alternative.","https://affinity.serif.com/","Photo Design"],
+      ["Adobe Premiere Mac","Professional video editing suite on Mac.","https://www.adobe.com/products/premiere.html","Editing"],
+      ["ScreenFlow","Screen recording and editing software.","https://www.telestream.net/screenflow/","Editing"],
+      ["CleanMyMac X","Mac optimization and cleaning tool.","https://macpaw.com/cleanmymac","System Tools"],
+      ["Luminar Neo","AI-powered photo editor.","https://skylum.com/luminar","Photo Design"],
+      ["Descript Mac","Video and audio editing via text transcription.","https://www.descript.com/","Editing & Audio"],
+      ["Pro Tools Mac","Industry-standard studio software.","https://www.avid.com/pro-tools","Audio"]
+    ]},
+    {icon:"🌐",title:"Web / Cloud Apps",free:[
+      ["Photopea","Browser-based free Photoshop alternative.","https://www.photopea.com/","Photo Design"],
+      ["Canva Web","Online graphic design platform.","https://www.canva.com/","Photo Design"],
+      ["ChatGPT Web","AI writing and problem-solving assistant.","https://chatgpt.com/","AI Tools"],
+      ["Adobe Podcast Enhance","AI-powered speech noise removal.","https://podcast.adobe.com/enhance","Audio"],
+      ["Pixlr Web","Lightweight online photo editor.","https://pixlr.com/","Photo Design"],
+      ["Veed.io Free","Browser video editor for quick clips.","https://www.veed.io/","Editing"],
+      ["Microsoft Copilot","AI text and image generator.","https://copilot.microsoft.com/","AI Tools"],
+      ["Ideogram","High quality text-to-image generator.","https://ideogram.ai/","AI Tools"],
+      ["Lalal.ai Free","Vocal and stem separator online.","https://www.lalal.ai/","Audio"],
+      ["Suno AI Free","Generate full songs with AI online.","https://suno.com/","AI Tools"]
+    ],paid:[
+      ["Midjourney Web","State-of-the-art AI art generator.","https://www.midjourney.com/","AI Tools"],
+      ["ChatGPT Plus Web","Access GPT-4 and advanced web tools.","https://chatgpt.com/","AI Tools"],
+      ["ElevenLabs Pro","Hyper-realistic text-to-speech AI.","https://elevenlabs.io/","AI & Audio"],
+      ["Runway Gen-2","Text-to-video cloud AI tool.","https://runwayml.com/","AI Tools"],
+      ["HeyGen","Create AI avatars and translated video.","https://www.heygen.com/","AI Tools"],
+      ["Synthesia","AI video creation platform.","https://www.synthesia.io/","AI Tools"],
+      ["Jasper AI","Marketing and copywriting AI tool.","https://www.jasper.ai/","AI Tools"],
+      ["Adobe Firefly Pro","Commercial AI photo generation.","https://firefly.adobe.com/","Photo Design"],
+      ["Figma Pro","Interface design platform online.","https://www.figma.com/","UI/UX Design"],
+      ["Remove.bg Pro","HD background removal service.","https://www.remove.bg/","Photo Design"]
+    ]}
+  ],
+  fr: [
+    {icon:"🤖",title:"Applications Android",free:[
+      ["CapCut Mobile","Éditeur vidéo simple et efficace.","https://www.capcut.com/","Montage"],
+      ["VN Editor","Éditeur professionnel sans filigrane.","https://www.vlognow.me/","Montage"],
+      ["Snapseed","Outil gratuit de retouche photo par Google.","https://snapseed.online/","Photo"],
+      ["BandLab","Studio d'enregistrement sonore complet.","https://www.bandlab.com/","Audio"],
+      ["Voloco (Gratuit)","Application d'auto-tune et traitement vocal.","https://voloco.com/","Audio"],
+      ["InShot (Gratuit)","Créateur de vidéos rapides pour réseaux.","https://inshot.com/","Montage"],
+      ["Canva App","Créez facilement des miniatures et visuels.","https://www.canva.com/","Photo"],
+      ["ChatGPT Mobile","Assistant IA pour la rédaction et les réponses.","https://chatgpt.com/","Intelligence Artificielle"],
+      ["Google Gemini","Application officielle de l'IA Google.","https://gemini.google.com/","Intelligence Artificielle"],
+      ["Tubi TV","Films et séries en streaming gratuit et légal.","https://tubitv.com/","Streaming"]
+    ],paid:[
+      ["LumaFusion","Le meilleur éditeur vidéo pro sur mobile.","https://luma-touch.com/lumafusion/","Montage"],
+      ["PowerDirector Pro","Éditeur puissant avec effets cinématographiques.","https://www.cyberlink.com/products/powerdirector-video-editing-software/overview_en_US.html","Montage"],
+      ["Alight Motion Pro","Application d'animation et de motion design.","https://alightmotion.com/","Graphisme"],
+      ["Lightroom Mobile Pro","Étalonnage photo professionnel sur mobile.","https://www.adobe.com/products/photoshop-lightroom.html","Photo"],
+      ["VoiceMod Pro Mobile","Modificateur de voix en temps réel.","https://www.voicemod.net/","Audio"],
+      ["Netflix App","Service de streaming leader mondial.","https://www.netflix.com/","Streaming"],
+      ["Shahid VIP","Plus grande bibliothèque de séries et films.","https://shahid.mbc.net/","Streaming"],
+      ["OSN+","Streaming exclusif de contenus internationaux.","https://osnplus.com/","Streaming"],
+      ["ChatGPT Plus App","Accès aux modèles d'IA avancés.","https://chatgpt.com/","Intelligence Artificielle"],
+      ["Filmora Mobile Pro","Montage vidéo pro simplifié.","https://filmora.wondershare.com/","Montage"]
+    ]},
+    {icon:"🍎",title:"Applications iOS (iPhone & iPad)",free:[
+      ["CapCut iOS","Application de montage numéro 1 sur iPhone.","https://www.capcut.com/","Montage"],
+      ["GarageBand","Studio de création musicale gratuit d'Apple.","https://www.apple.com/ios/garageband/","Audio"],
+      ["Canva iOS","Création de graphismes et miniatures.","https://www.canva.com/","Photo"],
+      ["Snapseed iOS","Éditeur photo avancé sur iOS.","https://snapseed.online/","Photo"],
+      ["Claude iOS","IA excellente pour la rédaction et l'analyse.","https://claude.ai/","Intelligence Artificielle"],
+      ["Perplexity AI","Moteur de recherche IA performant.","https://www.perplexity.ai/","Intelligence Artificielle"],
+      ["YouTube App","La plus grande plateforme vidéo au monde.","https://www.youtube.com/","Streaming"],
+      ["Adobe Express","Création rapide de visuels et vidéos.","https://www.adobe.com/express/","Photo"],
+      ["VN Video Editor","Montage fluide et sans filigrane.","https://www.vlognow.me/","Montage"],
+      ["Voloco iOS","Auto-tune et effets vocaux rapides.","https://voloco.com/","Audio"]
+    ],paid:[
+      ["Procreate","La référence du dessin numérique sur iPad.","https://procreate.com/","Photo & Dessin"],
+      ["LumaFusion iOS","Éditeur vidéo avancé numéro 1 sur iOS.","https://luma-touch.com/lumafusion/","Montage"],
+      ["Final Cut Pro iPad","Logiciel de montage professionnel pour iPad.","https://www.apple.com/final-cut-pro-for-ipad/","Montage"],
+      ["Logic Pro iPad","Suite de production musicale complète sur iPad.","https://www.apple.com/logic-pro-for-ipad/","Audio"],
+      ["Affinity Photo iOS","Alternative complète à Photoshop sur iPad.","https://affinity.serif.com/","Photo"],
+      ["Pixelmator Photo","Retouche photo basée sur l'IA.","https://www.pixelmator.com/photo/","Photo"],
+      ["Disney+ iOS","Films et séries Disney, Marvel et Star Wars.","https://www.disneyplus.com/","Streaming"],
+      ["Apple TV+","Films et séries originaux Apple.","https://tv.apple.com/","Streaming"],
+      ["Runway iOS","Génération de vidéos IA sur mobile.","https://runwayml.com/","Intelligence Artificielle"],
+      ["Filmora iOS Pro","Éditeur vidéo riche en fonctionnalités.","https://filmora.wondershare.com/","Montage"]
+    ]},
+    {icon:"🪟",title:"Logiciels Windows",free:[
+      ["DaVinci Resolve","Logiciel de montage gratuit très puissant.","https://www.blackmagicdesign.com/products/davinciresolve","Montage"],
+      ["Audacity","Logiciel d'édition audio populaire et gratuit.","https://www.audacityteam.org/","Audio"],
+      ["GIMP","Logiciel de retouche d'image open source.","https://www.gimp.org/","Photo"],
+      ["Shotcut","Éditeur vidéo gratuit et léger.","https://shotcut.org/","Montage"],
+      ["Clipchamp","Éditeur vidéo intégré dans Windows.","https://clipchamp.com/","Montage"],
+      ["Inkscape","Éditeur de graphismes vectoriels gratuit.","https://inkscape.org/","Photo"],
+      ["OpenShot","Éditeur vidéo simple et libre.","https://www.openshot.org/","Montage"],
+      ["VoiceMod (Gratuit)","Modificateur de voix pour le jeu vidéo.","https://www.voicemod.net/","Audio"],
+      ["Cakewalk","Station audio numérique (DAW) complète.","https://www.bandlab.com/products/cakewalk","Audio"],
+      ["Ocenaudio","Éditeur audio rapide et simple.","https://www.ocenaudio.com/","Audio"]
+    ],paid:[
+      ["Adobe Premiere Pro","La référence du montage vidéo pro.","https://www.adobe.com/products/premiere.html","Montage"],
+      ["Adobe Photoshop","Standard mondial pour le traitement d'image.","https://www.adobe.com/products/photoshop.html","Photo"],
+      ["Adobe After Effects","Standard pour les effets spéciaux et animations.","https://www.adobe.com/products/aftereffects.html","Montage"],
+      ["FL Studio","Studio de création musicale célèbre.","https://www.image-line.com/","Audio"],
+      ["iZotope RX","Nettoyage et réparation audio avancés.","https://www.izotope.com/","Audio"],
+      ["CorelDRAW","Logiciel de dessin vectoriel professionnel.","https://www.coreldraw.com/","Photo"],
+      ["Vegas Pro","Logiciel de montage vidéo cinématographique.","https://www.vegascreativesoftware.com/","Montage"],
+      ["Camtasia Pro","Enregistrement d'écran et montage tutoriel.","https://www.techsmith.com/camtasia.html","Montage"],
+      ["Adobe Audition","Station de travail audio professionnelle.","https://www.adobe.com/products/audition.html","Audio"],
+      ["Topaz Gigapixel AI","Amélioration et agrandissement d'images par IA.","https://www.topazlabs.com/gigapixel-ai","Photo"]
+    ]},
+    {icon:"💻",title:"Logiciels macOS",free:[
+      ["DaVinci Resolve Mac","Logiciel de montage haute performance.","https://www.blackmagicdesign.com/products/davinciresolve","Montage"],
+      ["iMovie","Éditeur vidéo gratuit inclus sur Mac.","https://www.apple.com/imovie/","Montage"],
+      ["Audacity Mac","Enregistreur et éditeur audio pour Mac.","https://www.audacityteam.org/","Audio"],
+      ["GIMP Mac","Éditeur d'images gratuit pour Mac.","https://www.gimp.org/","Photo"],
+      ["Shotcut Mac","Logiciel vidéo open source gratuit.","https://shotcut.org/","Montage"],
+      ["CapCut Mac","Version ordinateur de CapCut sur Mac.","https://www.capcut.com/","Montage"],
+      ["Inkscape Mac","Logiciel de dessin vectoriel pour macOS.","https://inkscape.org/","Photo"],
+      ["HandBrake","Convertisseur vidéo puissant et gratuit.","https://handbrake.fr/","Outils Vidéo"],
+      ["WavePad Mac","Éditeur audio pour Mac.","https://www.nch.com.au/wavepad/index.html","Audio"],
+      ["Krita","Logiciel gratuit de peinture numérique.","https://krita.org/","Photo & Dessin"]
+    ],paid:[
+      ["Final Cut Pro","Logiciel de montage vidéo phare d'Apple.","https://www.apple.com/final-cut-pro/","Montage"],
+      ["Logic Pro","Station de travail audio pro d'Apple.","https://www.apple.com/logic-pro/","Audio"],
+      ["Pixelmator Pro","Éditeur d’images conçu pour Mac.","https://www.pixelmator.com/pro/","Photo"],
+      ["Affinity Photo Mac","Alternative à Photoshop sans abonnement.","https://affinity.serif.com/","Photo"],
+      ["Adobe Premiere Mac","Suite de montage vidéo pro sur Mac.","https://www.adobe.com/products/premiere.html","Montage"],
+      ["ScreenFlow","Capture d'écran et montage vidéo sur Mac.","https://www.telestream.net/screenflow/","Montage"],
+      ["CleanMyMac X","Outil de nettoyage et d'optimisation Mac.","https://macpaw.com/cleanmymac","Outils Système"],
+      ["Luminar Neo","Éditeur photo propulsé par l'IA.","https://skylum.com/luminar","Photo"],
+      ["Descript Mac","Édition vidéo et audio par texte.","https://www.descript.com/","Montage & Audio"],
+      ["Pro Tools Mac","Logiciel standard des studios audio.","https://www.avid.com/pro-tools","Audio"]
+    ]},
+    {icon:"🌐",title:"Applications Web / Cloud",free:[
+      ["Photopea","Alternative gratuite à Photoshop en ligne.","https://www.photopea.com/","Photo"],
+      ["Canva Web","Plateforme de design graphique en ligne.","https://www.canva.com/","Photo"],
+      ["ChatGPT Web","Assistant IA pour la rédaction et la réflexion.","https://chatgpt.com/","Intelligence Artificielle"],
+      ["Adobe Podcast Enhance","Nettoyage vocal gratuit par IA.","https://podcast.adobe.com/enhance","Audio"],
+      ["Pixlr Web","Éditeur photo léger sur navigateur.","https://pixlr.com/","Photo"],
+      ["Veed.io Free","Éditeur vidéo rapide sur navigateur.","https://www.veed.io/","Montage"],
+      ["Microsoft Copilot","Générateur de texte et d'images IA.","https://copilot.microsoft.com/","Intelligence Artificielle"],
+      ["Ideogram","Générateur d'images et textes IA.","https://ideogram.ai/","Intelligence Artificielle"],
+      ["Lalal.ai Free","Séparateur de voix et d'instruments en ligne.","https://www.lalal.ai/","Audio"],
+      ["Suno AI Free","Générez des chansons complètes avec l'IA.","https://suno.com/","Intelligence Artificielle"]
+    ],paid:[
+      ["Midjourney Web","Générateur d'art IA de haut niveau.","https://www.midjourney.com/","Intelligence Artificielle"],
+      ["ChatGPT Plus Web","Accès à GPT-4 et outils web avancés.","https://chatgpt.com/","Intelligence Artificielle"],
+      ["ElevenLabs Pro","Synthèse vocale IA très réaliste.","https://elevenlabs.io/","Audio & IA"],
+      ["Runway Gen-2","Création de vidéos à partir de texte.","https://runwayml.com/","Intelligence Artificielle"],
+      ["HeyGen","Création d'avatars et vidéos IA.","https://www.heygen.com/","Intelligence Artificielle"],
+      ["Synthesia","Création de vidéos d'entreprise par IA.","https://www.synthesia.io/","Intelligence Artificielle"],
+      ["Jasper AI","Assistant de rédaction marketing IA.","https://www.jasper.ai/","Intelligence Artificielle"],
+      ["Adobe Firefly Pro","Génération photo commerciale par IA.","https://firefly.adobe.com/","Photo"],
+      ["Figma Pro","Plateforme de design d'interfaces en ligne.","https://www.figma.com/","Design UI/UX"],
+      ["Remove.bg Pro","Suppression d'arrière-plan HD.","https://www.remove.bg/","Photo"]
+    ]}
+  ]
+};
+
+const homePage=document.getElementById("homePage"), detailsPage=document.getElementById("detailsPage");
+const categoryList=document.getElementById("categoryList"), searchBox=document.getElementById("searchBox");
+const sectionTitle=document.getElementById("sectionTitle"), freeList=document.getElementById("freeList"), paidList=document.getElementById("paidList");
+const themeBtn=document.getElementById("themeBtn"), langSelect=document.getElementById("langSelect");
+
+themeBtn.onclick=()=>{
+  if(document.body.getAttribute("data-theme")==="dark"){
+    document.body.removeAttribute("data-theme");
+    themeBtn.textContent="🌙";
+  }else{
+    document.body.setAttribute("data-theme","dark");
+    themeBtn.textContent="☀️";
+  }
+};
+
+langSelect.onchange=(e)=>{
+  currentLang = e.target.value;
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+  updateTexts();
+  render(osCategories[currentLang]);
+};
+
+function updateTexts(){
+  const t = uiTexts[currentLang];
+  document.getElementById("subTitle").textContent = t.sub;
+  document.getElementById("devBanner").textContent = t.banner;
+  document.getElementById("selectOsTitle").textContent = t.selectOs;
+  searchBox.placeholder = t.searchPh;
+  document.getElementById("backButton").textContent = t.back;
+  document.getElementById("noteText").textContent = t.note;
+  document.getElementById("freeLabel").textContent = t.freeLabel;
+  document.getElementById("paidLabel").textContent = t.paidLabel;
+  document.getElementById("footerText").textContent = t.footer;
+}
+
+function render(list){
+  categoryList.innerHTML="";
+  list.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="category";
+    b.innerHTML=`<div class="icon">${c.icon}</div><div class="title">${c.title}</div><div class="small">${uiTexts[currentLang].appsCount}</div>`;
+    b.onclick=()=>openCategory(list.indexOf(c));
+    categoryList.appendChild(b);
+  });
+}
+
+function cards(list){
+  const t = uiTexts[currentLang];
+  return list.map(x=>`<div class="card"><div class="app">${x[0]}</div><div class="desc">${x[1]}</div><div class="tags"><span class="tag">${t.official}</span><span class="cat-tag">📌 ${x[3]}</span></div><a class="visit" href="${x[2]}" target="_blank" rel="noopener">${t.visit}</a></div>`).join("");
+}
+
+function openCategory(i){
+  const c=osCategories[currentLang][i];
+  sectionTitle.textContent=c.icon+" "+c.title;
+  freeList.innerHTML=cards(c.free);
+  paidList.innerHTML=cards(c.paid);
+  homePage.classList.add("hidden");
+  detailsPage.classList.remove("hidden");
+  scrollTo(0,0);
+}
+
+function goHome(){
+  detailsPage.classList.add("hidden");
+  homePage.classList.remove("hidden");
+  scrollTo(0,0);
+}
+
+document.getElementById("backButton").onclick=goHome;
+searchBox.oninput=()=>{
+  const q=searchBox.value.trim().toLowerCase();
+  render(osCategories[currentLang].filter(c=>c.title.toLowerCase().includes(q)));
+};
+
+updateTexts();
+render(osCategories[currentLang]);
+</script>
+</body>
+</html>
