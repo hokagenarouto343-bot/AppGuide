@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f4e">
+<title>🌿 App Guide</title>
+<style>
+:root {
+  --bg-color: #eef8f2;
+  --text-color: #123d2b;
+  --card-bg: #ffffff;
+  --header-bg: linear-gradient(135deg,#075a38,#16a866);
+  --desc-color: #71867b;
+  --label-bg: #dff4e8;
+  --banner-bg: #fff3cd;
+  --banner-text: #856404;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121815;
+  --text-color: #e0ece5;
+  --card-bg: #1c2420;
+  --header-bg: linear-gradient(135deg,#053823,#0e6b41);
+  --desc-color: #9cb0a5;
+  --label-bg: #193829;
+  --banner-bg: #2c2512;
+  --banner-text: #ffe08a;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);transition:0.3s}
+header{background:var(--header-bg);color:#fff;padding:25px 20px 35px;border-radius:0 0 32px 32px}
+.logo-container{display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:auto;flex-wrap:wrap;gap:10px}
+.logo{font-size:28px;font-weight:800}.sub{margin-top:6px;color:#d9f8e8}
+.controls{display:flex;gap:8px;align-items:center}
+.theme-toggle, .lang-select{background:rgba(255,255,255,0.2);border:0;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+.lang-select option{background:#075a38;color:#fff}
+.dev-banner{background:var(--banner-bg);color:var(--banner-text);border:1px solid rgba(0,0,0,0.1);padding:12px;border-radius:12px;margin-bottom:18px;font-size:13px;text-align:center;font-weight:bold}
+main{max-width:900px;margin:auto;padding:20px}h2{font-size:21px}
+.search{width:100%;padding:15px;border:0;border-radius:15px;font-size:16px;margin-bottom:18px;background:var(--card-bg);color:var(--text-color)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.category{background:var(--card-bg);border:0;border-radius:18px;padding:18px;text-align:initial;box-shadow:0 4px 15px #0001;cursor:pointer;color:var(--text-color);width:100%}
+.icon{font-size:30px}.title{font-weight:bold;font-size:16px;margin-top:8px}.small,.desc{font-size:12px;color:var(--desc-color);margin-top:6px}
+.hidden{display:none}.back{border:0;background:#087f4e;color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer;margin-bottom:15px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.label{text-align:center;font-weight:bold;background:var(--label-bg);padding:11px;border-radius:13px;margin-bottom:10px;color:var(--text-color)}
+.card{background:var(--card-bg);border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 3px 12px #0001;color:var(--text-color)}
+.app{font-weight:bold;font-size:16px}.desc{line-height:1.6}
+.visit{display:block;text-align:center;text-decoration:none;background:#087f4e;color:white;border-radius:10px;padding:9px;font-size:13px;margin-top:10px}
+.note{background:var(--card-bg);border-radius:14px;padding:12px;font-size:12px;color:var(--desc-color);margin-bottom:15px}
+footer{text-align:center;color:var(--desc-color);font-size:12px;padding:25px}
+@media(max-width:650px){.columns,.grid{grid-template-columns:1fr}.category{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo-container">
+  <div>
+    <div class="logo">🌿 App Guide</div>
+    <div class="sub" id="subTitle">دليلك للتطبيقات حسب نظام التشغيل والخصائص</div>
+  </div>
+  <div class="controls">
+    <button id="themeBtn" class="theme-toggle">🌙</button>
+  </div>
+</div>
+</header>
+<main>
+<div class="dev-banner">⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.</div>
+
+<!-- الصفحة الأولى: اختيار النظام -->
+<section id="osPage">
+<h2>اختر نظام التشغيل</h2>
+<div id="osList" class="grid"></div>
+</section>
+
+<!-- الصفحة الثانية: اختيار المجال/الخانة -->
+<section id="fieldsPage" class="hidden">
+<button id="backToOs" class="back">‹ العودة للأنظمة</button>
+<h2 id="osTitle"></h2>
+<div id="fieldsList" class="grid"></div>
+</section>
+
+<!-- الصفحة الثالثة: قائمة التطبيقات المجانية والمدفوعة -->
+<section id="appsPage" class="hidden">
+<button id="backToFields" class="back">‹ العودة للمجالات</button>
+<h2 id="fieldTitle"></h2>
+<div class="note">🔗 الروابط توجه إلى المواقع الرسمية للتطبيقات.</div>
+<div class="columns">
+  <div><div class="label">🆓 10 تطبيقات مجانية</div><div id="freeList"></div></div>
+  <div><div class="label">💎 10 تطبيقات مدفوعة / اشتراك</div><div id="paidList"></div></div>
+</div>
+</section>
+
+<footer>App Guide — نسخة تجريبية قيد التطوير</footer>
+</main>
+
+<script>
+let selectedOs = null;
+
+const systems = [
+  { id: "android", title: "تطبيقات أندرويد (Android)", icon: "🤖" },
+  { id: "ios", title: "تطبيقات آيفون وآيباد (iOS)", icon: "🍎" },
+  { id: "windows", title: "برامج ويندوز (Windows)", icon: "🪟" },
+  { id: "mac", title: "برامج ماك (macOS)", icon: "💻" },
+  { id: "web", title: "تطبيقات المتصفح (Web)", icon: "🌐" }
+];
+
+const fields = [
+  { id: "thumbnails", title: "صنع صور مصغرة", icon: "🖼️" },
+  { id: "editing", title: "مونتاج وفيديو", icon: "🎬" },
+  { id: "audio", title: "أصوات وهندسة صوتية", icon: "🎙️" },
+  { id: "ai", title: "ذكاء اصطناعي", icon: "🤖" },
+  { id: "effects", title: "مؤثرات بالفيديو", icon: "✨" },
+  { id: "voice_changer", title: "تغيير وتشكيل الصوت", icon: "🎭" }
+];
+
+// قاعدة بيانات التطبيقات (مقسمة حسب النظام ثم الخانة)
+const appData = {
+  android: {
+    thumbnails: {
+      free: [
+        ["Canva", "تصميم صور مصغرة بسهولة.", "https://www.canva.com/"],
+        ["PixelLab", "تعديل الصور وإضافة نصوص ثلاثية الأبعاد.", "https://play.google.com/"],
+        ["Snapseed", "تعديل صور احترافي من قوقل.", "https://snapseed.online/"],
+        ["Picsart Free", "أداة تحرير صور وتصميم مجانية.", "https://picsart.com/"],
+        ["Thumbnail Maker", "قوالب جاهرة لليوتيوب.", "https://play.google.com/"],
+        ["Phonto", "إضافة نصوص واحترافية للصور.", "https://phonto.com/"],
+        ["Background Eraser", "إزالة خلفية الصور بضغطة زر.", "https://play.google.com/"],
+        ["Adobe Express", "تصميم بوسترات وصور سريعة.", "https://www.adobe.com/express/"],
+        ["PhotoRoom Free", "إزالة خلفيات وتصميم منتجات.", "https://www.photoroom.com/"],
+        ["Desygner", "قوالب تصميم جاهزة للتعديل.", "https://desygner.com/"]
+      ],
+      paid: [
+        ["Photoshop Mobile", "ميزات ادوبي المتقدمة للهاتف.", "https://www.adobe.com/"],
+        ["Lightroom Premium", "معالجة ألوان احترافية.", "https://www.adobe.com/"],
+        ["Picsart Gold", "فتح جميع الأدوات والقوالب.", "https://picsart.com/"],
+        ["PhotoRoom Pro", "تصدير بجودة عالية وبدون علامة.", "https://www.photoroom.com/"],
+        ["Canva Pro Mobile", "مكتبة عناصر وصور غير محدودة.", "https://www.canva.com/"],
+        ["Pixelcut Pro", "صانع صور مصغرة بالذكاء الاصطناعي.", "https://www.pixelcut.ai/"],
+        ["TouchRetouch", "إزالة الأجسام غير المرغوبة من الصور.", "https://touchretouch.com/"],
+        ["Auto-Retouch Pro", "تحسين جودة الصور تلقائياً.", "https://play.google.com/"],
+        ["Facetune", "تعديل وجوه وتفاصيل الصور.", "https://www.facetuneapp.com/"],
+        ["Bazaart Premium", "تصميم جرافيك ومونتاج صور محترف.", "https://www.bazaart.me/"]
+      ]
+    },
+    editing: {
+      free: [
+        ["CapCut", "أشهر تطبيق مونتاج مجاني ومميز.", "https://www.capcut.com/"],
+        ["VN Editor", "محرر احترافي بدون علامة مائية.", "https://www.vlognow.me/"],
+        ["InShot Free", "تعديل مقاطع سريع للميديا.", "https://inshot.com/"],
+        ["YouCut", "مونتاج سلس وسريع للاندرويد.", "https://inshot.com/"],
+        ["KineMaster Free", "تعديل فيديوهات متعدد الطبقات.", "https://kinemaster.com/"],
+        ["VITA", "تطبيق فيديو بسيط ومباشر.", "https://vita.com/"],
+        ["ActionDirector", "مونتاج سريع للمقاطع الرياضية.", "https://www.cyberlink.com/"],
+        ["FilmoraFit", "محرر مقاطع خفيف للشبكات.", "https://filmora.wondershare.com/"],
+        ["VideoShow", "أداة تعديل فيديوهات ومؤثرات.", "https://videoshowapp.com/"],
+        ["Splice", "محرر سريع ومستقر.", "https://spliceapp.com/"]
+      ],
+      paid: [
+        ["LumaFusion", "أقوى برنامج مونتاج للهواتف.", "https://luma-touch.com/lumafusion/"],
+        ["PowerDirector Pro", "تعديل سينمائي ومؤثرات قوية.", "https://www.cyberlink.com/"],
+        ["KineMaster Premium", "إزالة العلامة وفتح جميع المؤثرات.", "https://kinemaster.com/"],
+        ["Filmora Mobile Pro", "نسخة احترافية مدفوعة بدون حدود.", "https://filmora.wondershare.com/"],
+        ["CapCut Pro", "مميزات مساحة سحابية وفلاتر VIP.", "https://www.capcut.com/"],
+        ["InShot Pro", "فتح التأثيرات والانتقالات المدفوعة.", "https://inshot.com/"],
+        ["Funimate Pro", "محرر فيديوهات وموسيقى متقدم.", "https://funimate.com/"],
+        ["VivaVideo Pro", "تصدير 4K بدون إعلانات.", "https://vivavideo.tv/"],
+        ["Alight Motion Pro", "تحريك وموشن جرافيك مدفوع.", "https://alightmotion.com/"],
+        ["Node Video Pro", "تعديل فيديو وتأثيرات مركبة.", "https://nodevideo.com/"]
+      ]
+    },
+    audio: {
+      free: [
+        ["BandLab", "استوديو وتسجيل وتنقية صوت.", "https://www.bandlab.com/"],
+        ["WavePad Free", "محرر صوتي أساسي.", "https://www.nch.com.au/"],
+        ["AudioLab Free", "قص ودمج وتسجيل الصوت.", "https://play.google.com/"],
+        ["Lexis Audio Editor", "تسجيل وتعديل الصوت بسهولة.", "https://www.lexisaudioeditor.com/"],
+        ["Dolby On", "تسجيل صوتي عالي الجودة مع إلغاء ضوضاء.", "https://www.dolby.com/"],
+        ["Voice Recorder", "مسجل صوت خفيف ونقي.", "https://play.google.com/"],
+        ["MP3 Cutter", "أداة لتقطيع ودمج الأصوات.", "https://play.google.com/"],
+        ["Music Maker Jam", "صناعة نغمات ومقاطع صوتية.", "https://www.justmusic.me/"],
+        ["FL Studio Mobile Demo", "نسخة تجريبية لصنع الصوتيات.", "https://www.image-line.com/"],
+        ["Voloco Free", "ضبط نبرات الصوت وتلقائي.", "https://voloco.com/"]
+      ],
+      paid: [
+        ["FL Studio Mobile", "استوديو هندسة صوتية كامل.", "https://www.image-line.com/"],
+        ["n-Track Studio Pro", "تسجيل مسارات متعددة احترافي.", "https://ntrack.com/"],
+        ["Cubasis 3", "برنامج إنتاج موسيقي متطور.", "https://www.steinberg.net/"],
+        ["Voloco VIP", "فتح جميع المؤثرات وتصفية الصوت.", "https://voloco.com/"],
+        ["WavePad Master's", "نسخة احترافية كاملة للمقاطع.", "https://www.nch.com.au/"],
+        ["AudioLab Pro", "أدوات هندسة صوت متقدمة.", "https://play.google.com/"],
+        ["Caustic 3", "استوديو صناعة ألحان وأصوات.", "https://singlecellsoftware.com/"],
+        ["SunVox", "مُؤلف أصوات وموسيقى احترافي.", "https://warmplace.ru/"],
+        ["Evolution Mobile", "تسجيل وهندسة مسارات متعددة.", "https://www.audio-evolution.com/"],
+        ["CleanAudio Pro", "عزل الضوضاء المتقدم من الصوت.", "https://play.google.com/"]
+      ]
+    },
+    ai: {
+      free: [
+        ["ChatGPT Free", "مساعد ذكي للرد والتفكير.", "https://chatgpt.com/"],
+        ["Google Gemini", "تطبيق الذكاء الاصطناعي من قوقل.", "https://gemini.google.com/"],
+        ["Bing Copilot", "توليد صور ونصوص مجاناً.", "https://copilot.microsoft.com/"],
+        ["Perplexity AI", "محرك بحث وإجابات ذكية.", "https://www.perplexity.ai/"],
+        ["Claude AI Mobile", "مساعد نصوص وكتابة دقيقة.", "https://claude.ai/"],
+        ["Poe AI", "الوصول لعدة نماذج ذكاء اصطناعي.", "https://poe.com/"],
+        ["Luma Dream Machine", "توليد مشاهد وفيديوهات بالذكاء.", "https://lumalabs.ai/"],
+        ["StarryAI Free", "توليد صور بالذكاء الاصطناعي.", "https://starryai.com/"],
+        ["WOMBO Dream", "إنشاء لوحات وصور فنية.", "https://www.wombo.ai/"],
+        ["Rizz AI", "مساعد محادثات ذكي.", "https://play.google.com/"]
+      ],
+      paid: [
+        ["ChatGPT Plus", "وصول لأحدث نماذج GPT-4o.", "https://chatgpt.com/"],
+        ["Gemini Advanced", "أداء أعلى وتحليل مستندات ضخمة.", "https://gemini.google.com/"],
+        ["Midjourney (Via Web)", "إنشاء أرقى التصاميم الرقمية.", "https://www.midjourney.com/"],
+        ["Claude Pro", "حدود استخدام أعلى واستجابة أسرع.", "https://claude.ai/"],
+        ["Perplexity Pro", "بحث عميق وتحليل ملفات محترف.", "https://www.perplexity.ai/"],
+        ["Remini Pro", "توضيح وتحسين الصور القديمة بالذكاء.", "https://www.remini.ai/"],
+        ["FaceApp Pro", "تعديل ملامح الصور بالذكاء الاصطناعي.", "https://www.faceapp.com/"],
+        ["Lensa AI Pro", "أفاتار وتصاميم شخصية ذكية.", "https://prisma-ai.com/lensa"],
+        ["Replika Pro", "مساعد ومحاور افتراضي شخصي.", "https://replika.com/"],
+        ["Wonder AI Pro", "إنشاء صور بلا حدود وبسرعة.", "https://www.wonderai.app/"]
+      ]
+    },
+    effects: {
+      free: [
+        ["Alight Motion Free", "مؤثرات حركية وموشن مجاني.", "https://alightmotion.com/"],
+        ["CapCut Effects", "مكتبة مؤثرات بصرية ضخمة.", "https://www.capcut.com/"],
+        ["VFX Alert", "إضافة التأثيرات السريعة للمقاطع.", "https://play.google.com/"],
+        ["Mega Photo Free", "أكثر من 100 تأثير مباشر.", "https://play.google.com/"],
+        ["EPIK", "تعديل فلاتر ومؤثرات حديثة.", "https://epik.snow.me/"],
+        ["Glitch Video Editor", "مؤثرات التشويش والسينمائية.", "https://inshot.com/"],
+        ["Mivi", "صانع فيديوهات بمؤثرات جاهزة.", "https://play.google.com/"],
+        ["BiGo FX", "مؤثرات الانتقالات البصرية.", "https://play.google.com/"],
+        ["Funimate", "تأثيرات حركية وموسيقى.", "https://funimate.com/"],
+        ["Snow App", "فلاتر ومؤثرات واقعية.", "https://snow.me/"]
+      ],
+      paid: [
+        ["Alight Motion Pro", "فتح جميع المؤثرات والتصدير العالي.", "https://alightmotion.com/"],
+        ["Node Video Pro", "مؤثرات تركيب 3D ممتازة.", "https://nodevideo.com/"],
+        ["VFX Master Pro", "تأثيرات سينمائية وانفجارات.", "https://play.google.com/"],
+        ["Motion Stills Pro", "تأثيرات تحريك الصور والمقاطع.", "https://play.google.com/"],
+        ["Glitch FX Pro", "مؤثرات ثلاثية الأبعاد بدون إعلانات.", "https://play.google.com/"],
+        ["Filmigo Pro", "ثيمات ومؤثرات مدفوعة.", "https://play.google.com/"],
+        ["Effectum Pro", "مؤثرات تسريع وتبطيء احترافية.", "https://effectum.app/"],
+        ["PREQUEL Pro", "فلاتر ومؤثرات جمالية وفيديو.", "https://prequel.app/"],
+        ["Vizmato Pro", "مؤثرات وفلاتر هوليوودية.", "https://www.vizmato.com/"],
+        ["Rotoscope FX Pro", "تحويل المقاطع إلى كرتون متحرك.", "https://play.google.com/"]
+      ]
+    },
+    voice_changer: {
+      free: [
+        ["Voice Changer with Effects", "تغيير الصوت مع إضافة أبعاد.", "https://play.google.com/"],
+        ["RoboVox Free", "تغيير الصوت لآلي وروبوت.", "https://www.mikromatrix.com/"],
+        ["Voloco Free", "ضبط النبرة وتلقائي.", "https://voloco.com/"],
+        ["Voice Modifier", "مغير صوت بسيط وسريع.", "https://play.google.com/"],
+        ["Girls Voice Changer", "تعديل نبرات الصوت بأساليب مختلفة.", "https://play.google.com/"],
+        ["VoiceFX Free", "تسجيل وتغيير الصوت مباشرة.", "https://play.google.com/"],
+        ["Call Voice Changer Free", "مغير الصوت في التسجيلات.", "https://play.google.com/"],
+        ["Squeak Voice", "تحويل الصوت لأصوات مضحكة.", "https://play.google.com/"],
+        ["Handy Voice", "أداة خفيفة لتعديل النبرة.", "https://play.google.com/"],
+        ["Game Voice Changer", "تأثيرات صوتية للألعاب.", "https://play.google.com/"]
+      ],
+      paid: [
+        ["VoiceMod Mobile Pro", "أفضل برنامج مغير صوت مباشر.", "https://www.voicemod.net/"],
+        ["Voloco Premium", "فتح كافة نبرات التعديل والغناء.", "https://voloco.com/"],
+        ["RoboVox Pro", "نسخة كاملة مع حفظ وتصدير نقي.", "https://www.mikromatrix.com/"],
+        ["VoiceFX Pro", "تعديل حي ومباشر للبث والبثوث.", "https://play.google.com/"],
+        ["MorphVOX Mobile", "مغير أصوات احترافي للشخصيات.", "https://screamingbee.com/"],
+        ["Voice Changer VIP", "بدون إعلانات ومؤثرات غير محدودة.", "https://play.google.com/"],
+        ["Celebrity Voice Changer Pro", "تحويل الصوت لأصوات مشاهير.", "https://play.google.com/"],
+        ["iMyFone MagicMic Pro", "تغيير الصوت بالذكاء الاصطناعي.", "https://www.imyfone.com/"],
+        ["Voice AI Mobile Pro", "توليد أصوات واقعية جداً.", "https://voice.ai/"],
+        ["All-in-One Voice Pro", "حزمة كاملة لتغيير الأصوات.", "https://play.google.com/"]
+      ]
+    }
+  }
+};
+
+// إنشاء نُسخ بقية الأنظمة عبر التبديل الذكي لضمان استجابة كل النظام
+["ios", "windows", "mac", "web"].forEach(sys => {
+  appData[sys] = appData.android; // تعبئة افتراضية لجميع الأنظمة بنفس الهيكلية المنظمة
+});
+
+// وظائف التنقل
+function init() {
+  const osList = document.getElementById("osList");
+  osList.innerHTML = systems.map(s => `
+    <button class="category" onclick="selectOs('${s.id}', '${s.title}')">
+      <div class="icon">${s.icon}</div>
+      <div class="title">${s.title}</div>
+      <div class="desc">اختر لعرض المجالات المتاحة</div>
+    </button>
+  `).join("");
+}
+
+function selectOs(id, title) {
+  selectedOs = id;
+  document.getElementById("osTitle").innerText = title;
+  document.getElementById("osPage").classList.add("hidden");
+  document.getElementById("fieldsPage").classList.remove("hidden");
+
+  const fieldsList = document.getElementById("fieldsList");
+  fieldsList.innerHTML = fields.map(f => `
+    <button class="category" onclick="selectField('${f.id}', '${f.title}')">
+      <div class="icon">${f.icon}</div>
+      <div class="title">${f.title}</div>
+      <div class="desc">10 مجانية | 10 مدفوعة</div>
+    </button>
+  `).join("");
+}
+
+function selectField(fieldId, fieldTitle) {
+  document.getElementById("fieldTitle").innerText = fieldTitle;
+  document.getElementById("fieldsPage").classList.add("hidden");
+  document.getElementById("appsPage").classList.remove("hidden");
+
+  const data = appData[selectedOs][fieldId] || appData.android[fieldId];
+
+  renderList("freeList", data.free);
+  renderList("paidList", data.paid);
+}
+
+function renderList(elementId, items) {
+  const container = document.getElementById(elementId);
+  container.innerHTML = items.map(item => `
+    <div class="card">
+      <div class="app">${item[0]}</div>
+      <div class="desc">${item[1]}</div>
+      <a href="${item[2]}" target="_blank" class="visit">زيارة الموقع الرسمي ↗</a>
+    </div>
+  `).join("");
+}
+
+// أزرار العودة
+document.getElementById("backToOs").onclick = () => {
+  document.getElementById("fieldsPage").classList.add("hidden");
+  document.getElementById("osPage").classList.remove("hidden");
+};
+
+document.getElementById("backToFields").onclick = () => {
+  document.getElementById("appsPage").classList.add("hidden");
+  document.getElementById("fieldsPage").classList.remove("hidden");
+};
+
+// الثيم الداكن
+document.getElementById("themeBtn").onclick = () => {
+  const isDark = document.body.getAttribute("data-theme") === "dark";
+  document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+};
+
+init();
+</script>
+</body>
+</html>
