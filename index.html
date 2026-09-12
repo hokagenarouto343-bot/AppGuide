@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f4e">
+<title>🌿 App Guide — نسخة تجريبية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#eef8f2;color:#123d2b}
+header{background:linear-gradient(135deg,#075a38,#16a866);color:#fff;padding:30px 20px 38px;border-radius:0 0 32px 32px}
+.logo{font-size:30px;font-weight:800}.sub{margin-top:8px;color:#d9f8e8}
+.dev-banner{background:#fff3cd;color:#856404;border:1px solid #ffeeba;padding:12px;border-radius:12px;margin-bottom:18px;font-size:13px;text-align:center;font-weight:bold}
+main{max-width:900px;margin:auto;padding:20px}h2{font-size:21px}
+.search{width:100%;padding:15px;border:0;border-radius:15px;font-size:16px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.category{background:#fff;border:0;border-radius:18px;padding:18px;text-align:right;box-shadow:0 4px 15px #0001;cursor:pointer}.icon{font-size:30px}.title{font-weight:bold;font-size:16px;margin-top:8px}.small,.desc{font-size:12px;color:#71867b;margin-top:6px}
+.hidden{display:none}.back{border:0;background:#087f4e;color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.label{text-align:center;font-weight:bold;background:#dff4e8;padding:11px;border-radius:13px;margin-bottom:10px}
+.card{background:#fff;border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 3px 12px #0001}.app{font-weight:bold;font-size:16px}.desc{line-height:1.6}.tag{display:inline-block;background:#edf7f1;color:#087f4e;border-radius:8px;padding:5px 8px;font-size:11px;margin-bottom:10px}
+.visit{display:block;text-align:center;text-decoration:none;background:#087f4e;color:white;border-radius:10px;padding:9px;font-size:13px}
+.note{background:#fff;border-radius:14px;padding:12px;font-size:12px;color:#60786b;margin-bottom:15px}
+footer{text-align:center;color:#769184;font-size:12px;padding:25px}
+@media(max-width:650px){.columns{grid-template-columns:1fr;gap:7px}.category{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">🌿 App Guide</div>
+<div class="sub">تطبيقات حقيقية وروابط رسمية</div>
+</header>
+<main>
+<div class="dev-banner">⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.</div>
+<section id="homePage">
+<h2>اختر القسم</h2>
+<input id="searchBox" class="search" placeholder="🔎 ابحث عن قسم...">
+<div id="categoryList" class="grid"></div>
+</section>
+<section id="detailsPage" class="hidden">
+<button id="backButton" class="back">‹ العودة للأقسام</button>
+<h2 id="sectionTitle"></h2>
+<div class="note">🔗 الروابط توجه إلى المواقع الرسمية. (نسخة تجريبية قيد التطوير)</div>
+<div class="columns">
+<div><div class="label">🆓 10 تطبيقات مجانية / متاح مجانًا</div><div id="freeList"></div></div>
+<div><div class="label">💎 10 تطبيقات مدفوعة / اشتراك</div><div id="paidList"></div></div>
+</div>
+</section>
+<footer>App Guide — نسخة تجريبية قيد التطوير</footer>
+</main>
+<script>
+const categories=[
+{icon:"🎬",title:"تطبيقات مونتاج",free:[
+["CapCut","أداة مونتاج سهلة للموبايل والكمبيوتر.","https://www.capcut.com/"],
+["VN Video Editor","محرر فيديو احترافي وبدون علامة مائية.","https://www.vlognow.me/"],
+["DaVinci Resolve","أقوى برنامج مونتاج وتعديل ألوان مجاني.","https://www.blackmagicdesign.com/products/davinciresolve"],
+["KineMaster","محرر فيديو متنوع للموبايل.","https://kinemaster.com/"],
+["Shotcut","برنامج مونتاج مجاني مفتوح المصدر.","https://shotcut.org/"],
+["OpenShot","محرر فيديو بسيط وسهل الاستخدام.","https://www.openshot.org/"],
+["InShot","تطبيق تجميع ومونتاج سريع للشبكات الاجتماعية.","https://inshot.com/"],
+["Veed.io (Free)","أداة مونتاج أونلاين مجانية للمتصفح.","https://www.veed.io/"],
+["Clipchamp","محرر فيديو مجاني مدمج من ويندوز.","https://clipchamp.com/"],
+["Lightworks (Free)","نسخة مجانية من برنامج مونتاج سينمائي.","https://lwks.com/"]],
+paid:[
+["LumaFusion","أقوى تطبيق مونتاج مخصص للأجهزة المحمولة.","https://luma-touch.com/lumafusion/"],
+["PowerDirector","برنامج مونتاج متكامل وتأثيرات احترافية.","https://www.cyberlink.com/products/powerdirector-video-editing-software/overview_en_US.html"],
+["Adobe Premiere Pro","البرنامج الأبرز عالمياً في صناعة الفيديو.","https://www.adobe.com/products/premiere.html"],
+["Final Cut Pro","برنامج المونتاج المعتمد لمستخدمي أبل.","https://www.apple.com/final-cut-pro/"],
+["Adobe After Effects","البرنامج الأول للموشن جرافيك والتأثيرات.","https://www.adobe.com/products/aftereffects.html"],
+["Filmora","محرر فيديو شهير وسهل للمبتدئين والمحترفين.","https://filmora.wondershare.com/"],
+["Vegas Pro","برنامج تحرير فيديو سينمائي متقدم.","https://www.vegascreativesoftware.com/"],
+["Descript","محرر فيديو وصوت احترافي بالذكاء الاصطناعي.","https://www.descript.com/"],
+["Alight Motion Pro","تطبيق تحريك وموشن جرافيك للهواتف.","https://alightmotion.com/"],
+["CamStudio Pro","أداة تسجيل الشاشة والمونتاج التعليمي.","https://www.techsmith.com/camtasia.html"]]},
+
+{icon:"🖼️",title:"صنع صور مصغرة",free:[
+["Canva","تصميم صور مصغرة وقوالب جاهزة.","https://www.canva.com/"],
+["Adobe Express","تصاميم وتعديل صور سريع ومجاني.","https://www.adobe.com/express/"],
+["Pixlr","محرر صور خفيف يعمل من المتصفح.","https://pixlr.com/"],
+["Photopea","بديل فوتوشوب مجاني يعمل على المتصفح.","https://www.photopea.com/"],
+["Fotor","أداة تعديل وصنع صور مصغرة.","https://www.fotor.com/"],
+["GIMP","برنامج تعديل صور مجاني ومفتوح المصدر.","https://www.gimp.org/"],
+["Snapseed","تطبيق احترافي لتعديل الصور من قوقل.","https://snapseed.online/"],
+["Inkscape","برنامج رسومات وتصاميم فكتور مجاني.","https://inkscape.org/"],
+["Designify","أداة إزالة الخلفيات وتصميم الصور.","https://www.designify.com/"],
+["BeFunky","محرر صور ومصمم بوسترات مجاني.","https://www.befunky.com/"]],
+paid:[
+["Adobe Photoshop","البرنامج الأقوى عالمياً لإنشاء وتعديل الصور.","https://www.adobe.com/products/photoshop.html"],
+["Affinity Photo","محرر صور احترافي بشراء لمرة واحدة.","https://affinity.serif.com/"],
+["Pixelmator Pro","تطبيق تصميم متقدم مخصص لأجهزة ماك.","https://www.pixelmator.com/pro/"],
+["CorelDRAW","برنامج تصميم جرافيكي وفكتور احترافي.","https://www.coreldraw.com/"],
+["Lightroom Pro","أفضل أداة لمعالجة وتحسين ألوان الصور.","https://www.adobe.com/products/photoshop-lightroom.html"],
+["Capture One","برنامج تعديل ألوان واحترافي للمصورين.","https://www.captureone.com/"],
+["Topaz Gigapixel AI","أداة مدفوعة لرفع دقة الصور بالذكاء الاصطناعي.","https://www.topazlabs.com/gigapixel-ai"],
+["Procreate","أفضل تطبيق رسم وتصميم لجهاز الآيباد.","https://procreate.com/"],
+["Luminar Neo","محرر صور احترافي يعتمد على الذكاء الاصطناعي.","https://skylum.com/luminar"],
+["PaintTool SAI","برنامج رسوم ورسومات رقمية شهير.","https://www.systemax.jp/en/sai/"]]},
+
+{icon:"🤖",title:"أدوات الذكاء الاصطناعي",free:[
+["ChatGPT (Free)","مساعد ذكي للكتابة وتوليد الأفكار.","https://chatgpt.com/"],
+["Microsoft Copilot","مساعد ذكي لتوليد النصوص والصور.","https://copilot.microsoft.com/"],
+["Google Gemini","نموذج الذكاء الاصطناعي من قوقل.","https://gemini.google.com/"],
+["Claude","ذكاء اصطناعي ممتاز في كتابة وتحليل النصوص.","https://claude.ai/"],
+["HuggingChat","نموذج ذكاء اصطناعي مفتوح المصدر.","https://huggingface.co/chat/"],
+["Perplexity AI","محرك بحث واستكشاف بالذكاء الاصطناعي.","https://www.perplexity.ai/"],
+["Suno AI (Free)","أداة توليد الأغاني والموسيقى بالذكاء الاصطناعي.","https://suno.com/"],
+["DeepL","أدق أداة ترجمة نصوص بالذكاء الاصطناعي.","https://www.deepl.com/"],
+["Ideogram","أداة مجانية لتوليد صور ونصوص دقيقة.","https://ideogram.ai/"],
+["Pika Labs (Free)","إنشاء مقاطع فيديو قصيرة مجاناً.","https://pika.art/"]],
+paid:[
+["Midjourney","أفضل أداة لتوليد الصور الفنية الرقمية.","https://www.midjourney.com/"],
+["ChatGPT Plus","النسخة المدفوعة المتقدمة مع أحدث النماذج.","https://chatgpt.com/"],
+["Adobe Firefly Pro","توليد وتعديل الصور والتأثيرات التجارية.","https://firefly.adobe.com/"],
+["Runway Gen-2","إنشاء وتعديل الفيديوهات بالذكاء الاصطناعي.","https://runwayml.com/"],
+["Sora by OpenAI","منصة توليد فيديو فائقة الواقعية من النصوص.","https://openai.com/sora"],
+["ElevenLabs","أفضل أداة لتوليد الأصوات البشرية والتحويل النصي.","https://elevenlabs.io/"],
+["Jasper AI","مساعد كتابة الإعلانات والمحتوى التسويقي.","https://www.jasper.ai/"],
+["Synthesia","إنشاء فيديوهات بواسطة متحدثين افتراضيين.","https://www.synthesia.io/"],
+["HeyGen","صناعة فيديو بالذكاء الاصطناعي وترجمة الأصوات.","https://www.heygen.com/"],
+["Claude Pro","الاشتراك المتقدم لنموذج Claude بنطاق أوسع.","https://claude.ai/"]]},
+
+{icon:"🎞️",title:"تطبيقات مشاهدة الأفلام",free:[
+["YouTube","أكبر منصة لمشاهدة الفيديوهات مجاناً.","https://www.youtube.com/"],
+["Tubi TV","منصة أفلام ومسلسلات مجانية قانونية.","https://tubitv.com/"],
+["Plex","بث قنوات وأفلام مجانية ومكتبات شخصية.","https://www.plex.tv/"],
+["Pluto TV","خدمة بث مجاني لقنوات التلفزيون والأفلام.","https://pluto.tv/"],
+["Vudu (Free)","قسم الأفلام المجانية المدعوم بالإعلانات.","https://www.vudu.com/"],
+["Crackle","خدمة أفلام ومسلسلات مجانية عبر المتصفح.","https://www.crackle.com/"],
+["Freevee","خدمة مشاهدة مجانية من أمازون.","https://www.amazon.com/freevee"],
+["Popcornflix","منصة مشاهدة ترفيهية مجانية.","https://www.popcornflix.com/"],
+["Filmzie","أفلام مستقلة ومحتوى مجاني.","https://filmzie.com/"],
+["Kanopy","منصة أفلام تعليمية ووثائقية مجانية للمكتبات.","https://www.kanopy.com/"]],
+paid:[
+["Netflix","المنصة الشهيرة للبث والأعمال الحصرية.","https://www.netflix.com/"],
+["Disney+","بث أفلام ديزني، مارفل، وستار وورز.","https://www.disneyplus.com/"],
+["Amazon Prime Video","مكتبة ضخمة من الأفلام والمسلسلات.","https://www.primevideo.com/"],
+["OSN+","منصة البث السينمائي والعربي المباشر.","https://osnplus.com/"],
+["Apple TV+","أعمال وأفلام حصرية بإنتاج أبل.","https://tv.apple.com/"],
+["HBO Max (Max)","أفلام وارنر برذرز ومسلسلات HBO.","https://www.max.com/"],
+["Shahid VIP","أكبر منصة للمحتوى والمسلسلات العربية.","https://shahid.mbc.net/"],
+["Hulu","خدمة بث الأفلام والعروض التلفزيونية.","https://www.hulu.com/"],
+["Paramount+","منصة ترفيه شاملة للأفلام والرياضة.","https://www.paramountplus.com/"],
+["Crunchyroll","أكبر منصة مدفوعة لمشاهدة أنمي ياباني.","https://www.crunchyroll.com/"]]},
+
+{icon:"🎙️",title:"تغيير الصوت ومعالجته",free:[
+["Voloco (Free)","تعديل الصوت ومؤثرات صوتية هاتفية.","https://voloco.com/"],
+["BandLab","استوديو هندسة صوت وموسيقى مجاني.","https://www.bandlab.com/"],
+["Audacity","أشهر برنامج هندسة وتنقية صوت مجاني.","https://www.audacityteam.org/"],
+["VoiceMod (Free)","تغيير الصوت المباشر في الألعاب والبث.","https://www.voicemod.net/"],
+["CapCut Audio","أدوات تنقية الصوت والمؤثرات مجاناً.","https://www.capcut.com/"],
+["Adobe Podcast (Free)","أداة ذكاء اصطناعي لتصفية الصوت مجاناً.","https://podcast.adobe.com/enhance"],
+["Lalal.ai (Free)","فصل الصوت عن الموسيقى مجاناً.","https://www.lalal.ai/"],
+["WavePad (Free)","برنامج تعديل الصوت وتسجيل النبرات.","https://www.nch.com.au/wavepad/index.html"],
+["Cakewalk","برنامج إنتاج وتنسيق صوت كامل مجاني.","https://www.bandlab.com/products/cakewalk"],
+["Ocenaudio","محرر صوتي سريع وسهل الاستخدام.","https://www.ocenaudio.com/"]],
+paid:[
+["iZotope RX","أقوى حزمة احترافية لتنقية وهندسة الصوت.","https://www.izotope.com/"],
+["Antares Auto-Tune","الأداة الشهيرة لتصحيح النغمات والغناء.","https://www.antarestech.com/"],
+["VoiceMod Pro","النسخة الكاملة بدون قيود لتغيير الصوت.","https://www.voicemod.net/"],
+["FL Studio","استوديو إنتاج وتعديل الموسيقى والصوتيات.","https://www.image-line.com/"],
+["Logic Pro","أداة الهندسة الصوتية الاحترافية لمستخدمي ماك.","https://www.apple.com/logic-pro/"],
+["Adobe Audition","برنامج أدوبي المعتمد لمعالجة الصوت.","https://www.adobe.com/products/audition.html"],
+["Cubase","برنامج التوزيع الموسيقي والهندسة الصوتية.","https://www.steinberg.net/cubase/"],
+["Reaper","برنامج تسجيل وتعديل صوت احترافي وخفيف.","https://www.reaper.fm/"],
+["Pro Tools","البرنامج القياسي العالمي في استوديوهات الصوت.","https://www.avid.com/pro-tools"],
+["MorphVOX Pro","برنامج تغيير وتشكيل الصوت باحترافية.","https://screamingbee.com/morphvox-texture"]]}
+];
+
+const homePage=document.getElementById("homePage"), detailsPage=document.getElementById("detailsPage");
+const categoryList=document.getElementById("categoryList"), searchBox=document.getElementById("searchBox");
+const sectionTitle=document.getElementById("sectionTitle"), freeList=document.getElementById("freeList"), paidList=document.getElementById("paidList");
+
+function render(list){
+  categoryList.innerHTML="";
+  list.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="category";
+    b.innerHTML=`<div class="icon">${c.icon}</div><div class="title">${c.title}</div><div class="small">20 تطبيقًا محققًا</div>`;
+    b.onclick=()=>openCategory(categories.indexOf(c));
+    categoryList.appendChild(b);
+  });
+}
+
+function cards(list){
+  return list.map(x=>`<div class="card"><div class="app">${x[0]}</div><div class="desc">${x[1]}</div><span class="tag">رابط رسمي</span><a class="visit" href="${x[2]}" target="_blank" rel="noopener">زيارة الموقع الرسمي ↗</a></div>`).join("");
+}
+
+function openCategory(i){
+  const c=categories[i];
+  sectionTitle.textContent=c.icon+" "+c.title;
+  freeList.innerHTML=cards(c.free);
+  paidList.innerHTML=cards(c.paid);
+  homePage.classList.add("hidden");
+  detailsPage.classList.remove("hidden");
+  scrollTo(0,0);
+}
+
+function goHome(){
+  detailsPage.classList.add("hidden");
+  homePage.classList.remove("hidden");
+  scrollTo(0,0);
+}
+
+document.getElementById("backButton").onclick=goHome;
+searchBox.oninput=()=>{
+  const q=searchBox.value.trim().toLowerCase();
+  render(categories.filter(c=>c.title.toLowerCase().includes(q)));
+};
+render(categories);
+</script>
+</body>
+  </html>
+  
