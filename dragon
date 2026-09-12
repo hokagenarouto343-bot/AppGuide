@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f4e">
+<title>🌿 App Guide</title>
+<style>
+:root {
+  --bg-color: #eef8f2;
+  --text-color: #123d2b;
+  --card-bg: #ffffff;
+  --header-bg: linear-gradient(135deg,#075a38,#16a866);
+  --desc-color: #71867b;
+  --label-bg: #dff4e8;
+  --banner-bg: #fff3cd;
+  --banner-text: #856404;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121815;
+  --text-color: #e0ece5;
+  --card-bg: #1c2420;
+  --header-bg: linear-gradient(135deg,#053823,#0e6b41);
+  --desc-color: #9cb0a5;
+  --label-bg: #193829;
+  --banner-bg: #2c2512;
+  --banner-text: #ffe08a;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);transition:0.3s}
+header{background:var(--header-bg);color:#fff;padding:25px 20px 35px;border-radius:0 0 32px 32px}
+.logo-container{display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:auto;flex-wrap:wrap;gap:10px}
+.logo{font-size:28px;font-weight:800}.sub{margin-top:6px;color:#d9f8e8}
+.controls{display:flex;gap:8px;align-items:center}
+.theme-toggle, .lang-select{background:rgba(255,255,255,0.2);border:0;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+.lang-select option{background:#075a38;color:#fff}
+.dev-banner{background:var(--banner-bg);color:var(--banner-text);border:1px solid rgba(0,0,0,0.1);padding:12px;border-radius:12px;margin-bottom:18px;font-size:13px;text-align:center;font-weight:bold}
+main{max-width:900px;margin:auto;padding:20px}h2{font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.category{background:var(--card-bg);border:0;border-radius:18px;padding:18px;text-align:initial;box-shadow:0 4px 15px #0001;cursor:pointer;color:var(--text-color);width:100%}
+.icon{font-size:30px}.title{font-weight:bold;font-size:16px;margin-top:8px}.desc{font-size:12px;color:var(--desc-color);margin-top:6px}
+.hidden{display:none}.back{border:0;background:#087f4e;color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer;margin-bottom:15px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.label{text-align:center;font-weight:bold;background:var(--label-bg);padding:11px;border-radius:13px;margin-bottom:10px;color:var(--text-color)}
+.card{background:var(--card-bg);border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 3px 12px #0001;color:var(--text-color)}
+.app{font-weight:bold;font-size:16px}.desc{line-height:1.6}
+.visit{display:block;text-align:center;text-decoration:none;background:#087f4e;color:white;border-radius:10px;padding:9px;font-size:13px;margin-top:10px}
+.note{background:var(--card-bg);border-radius:14px;padding:12px;font-size:12px;color:var(--desc-color);margin-bottom:15px}
+footer{text-align:center;color:var(--desc-color);font-size:12px;padding:25px}
+@media(max-width:650px){.columns,.grid{grid-template-columns:1fr}.category{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo-container">
+  <div>
+    <div class="logo">🌿 App Guide</div>
+    <div class="sub" id="subTitle">دليلك للتطبيقات حسب نظام التشغيل والخصائص</div>
+  </div>
+  <div class="controls">
+    <select id="langSelect" class="lang-select">
+      <option value="ar">العربية 🇸🇦</option>
+      <option value="en">English 🇬🇧</option>
+      <option value="fr">Français 🇫🇷</option>
+    </select>
+    <button id="themeBtn" class="theme-toggle">🌙</button>
+  </div>
+</div>
+</header>
+<main>
+<div class="dev-banner" id="devBanner">⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.</div>
+
+<!-- الصفحة الأولى: اختيار النظام -->
+<section id="osPage">
+<h2 id="selectOsTitle">اختر نظام التشغيل</h2>
+<div id="osList" class="grid"></div>
+</section>
+
+<!-- الصفحة الثانية: اختيار المجال/الخانة -->
+<section id="fieldsPage" class="hidden">
+<button id="backToOs" class="back">‹ العودة للأنظمة</button>
+<h2 id="osTitle"></h2>
+<div id="fieldsList" class="grid"></div>
+</section>
+
+<!-- الصفحة الثالثة: قائمة التطبيقات المجانية والمدفوعة -->
+<section id="appsPage" class="hidden">
+<button id="backToFields" class="back">‹ العودة للمجالات</button>
+<h2 id="fieldTitle"></h2>
+<div class="note" id="noteText">🔗 الروابط توجه إلى المواقع الرسمية للتطبيقات.</div>
+<div class="columns">
+  <div><div class="label" id="freeLabel">🆓 10 تطبيقات مجانية</div><div id="freeList"></div></div>
+  <div><div class="label" id="paidLabel">💎 10 تطبيقات مدفوعة / اشتراك</div><div id="paidList"></div></div>
+</div>
+</section>
+
+<footer id="footerText">App Guide — نسخة تجريبية قيد التطوير</footer>
+</main>
+
+<script>
+let currentLang = "ar";
+let selectedOs = null;
+let selectedField = null;
+
+const uiTexts = {
+  ar: {
+    sub: "دليلك للتطبيقات حسب نظام التشغيل والخصائص",
+    banner: "⚠️ تنبيه: هذه المنصة ما زالت نسخة تجريبية قيد التطوير والتحسين المستمر.",
+    selectOs: "اختر نظام التشغيل",
+    backToOs: "‹ العودة للأنظمة",
+    backToFields: "‹ العودة للمجالات",
+    note: "🔗 الروابط توجه إلى المواقع الرسمية للتطبيقات.",
+    freeLabel: "🆓 10 تطبيقات مجانية",
+    paidLabel: "💎 10 تطبيقات مدفوعة / اشتراك",
+    footer: "App Guide — نسخة تجريبية قيد التطوير",
+    visit: "زيارة الموقع الرسمي ↗",
+    fieldDesc: "10 مجانية | 10 مدفوعة",
+    osDesc: "اختر لعرض المجالات المتاحة"
+  },
+  en: {
+    sub: "Your guide for apps by OS and category",
+    banner: "⚠️ Notice: This platform is still a beta version under continuous development.",
+    selectOs: "Select Operating System",
+    backToOs: "‹ Back to OS List",
+    backToFields: "‹ Back to Categories",
+    note: "🔗 Links direct to the official websites.",
+    freeLabel: "🆓 10 Free Apps",
+    paidLabel: "💎 10 Paid / Subscription Apps",
+    footer: "App Guide — Beta Version",
+    visit: "Visit Official Site ↗",
+    fieldDesc: "10 Free | 10 Paid",
+    osDesc: "Select to view available categories"
+  },
+  fr: {
+    sub: "Votre guide d'applications par système et catégorie",
+    banner: "⚠️ Remarque : Cette plateforme est encore une version bêta en développement.",
+    selectOs: "Sélectionnez le système d'exploitation",
+    backToOs: "‹ Retour aux systèmes",
+    backToFields: "‹ Retour aux catégories",
+    note: "🔗 Les liens redirigent vers les sites officiels.",
+    freeLabel: "🆓 10 Applications Gratuites",
+    paidLabel: "💎 10 Applications Payantes",
+    footer: "App Guide — Version Bêta",
+    visit: "Visiter le site officiel ↗",
+    fieldDesc: "10 Gratuites | 10 Payantes",
+    osDesc: "Sélectionnez pour voir les catégories"
+  }
+};
+
+const systemsData = {
+  ar: [
+    { id: "android", title: "تطبيقات أندرويد (Android)", icon: "🤖" },
+    { id: "ios", title: "تطبيقات آيفون وآيباد (iOS)", icon: "🍎" },
+    { id: "windows", title: "برامج ويندوز (Windows)", icon: "🪟" },
+    { id: "mac", title: "برامج ماك (macOS)", icon: "💻" },
+    { id: "web", title: "تطبيقات المتصفح (Web)", icon: "🌐" }
+  ],
+  en: [
+    { id: "android", title: "Android Apps", icon: "🤖" },
+    { id: "ios", title: "iOS Apps (iPhone & iPad)", icon: "🍎" },
+    { id: "windows", title: "Windows Software", icon: "🪟" },
+    { id: "mac", title: "macOS Software", icon: "💻" },
+    { id: "web", title: "Web Apps", icon: "🌐" }
+  ],
+  fr: [
+    { id: "android", title: "Applications Android", icon: "🤖" },
+    { id: "ios", title: "Applications iOS", icon: "🍎" },
+    { id: "windows", title: "Logiciels Windows", icon: "🪟" },
+    { id: "mac", title: "Logiciels macOS", icon: "💻" },
+    { id: "web", title: "Applications Web", icon: "🌐" }
+  ]
+};
+
+const fieldsData = {
+  ar: [
+    { id: "thumbnails", title: "صنع صور مصغرة", icon: "🖼️" },
+    { id: "editing", title: "مونتاج وفيديو", icon: "🎬" },
+    { id: "audio", title: "أصوات وهندسة صوتية", icon: "🎙️" },
+    { id: "ai", title: "ذكاء اصطناعي", icon: "🤖" },
+    { id: "effects", title: "مؤثرات بالفيديو", icon: "✨" },
+    { id: "voice_changer", title: "تغيير وتشكيل الصوت", icon: "🎭" }
+  ],
+  en: [
+    { id: "thumbnails", title: "Thumbnail Maker", icon: "🖼️" },
+    { id: "editing", title: "Video Editing", icon: "🎬" },
+    { id: "audio", title: "Audio & Sound", icon: "🎙️" },
+    { id: "ai", title: "Artificial Intelligence", icon: "🤖" },
+    { id: "effects", title: "Video Effects", icon: "✨" },
+    { id: "voice_changer", title: "Voice Changer", icon: "🎭" }
+  ],
+  fr: [
+    { id: "thumbnails", title: "Création de Vignettes", icon: "🖼️" },
+    { id: "editing", title: "Montage Vidéo", icon: "🎬" },
+    { id: "audio", title: "Audio & Son", icon: "🎙️" },
+    { id: "ai", title: "Intelligence Artificielle", icon: "🤖" },
+    { id: "effects", title: "Effets Vidéo", icon: "✨" },
+    { id: "voice_changer", title: "Changeur de Voix", icon: "🎭" }
+  ]
+};
+
+// تطبيقات افتراضية موحدة تعمل مع اختيار التصفح
+const sampleApps = {
+  thumbnails: {
+    free: [
+      ["Canva", "تصميم صور مصغرة بسهولة.", "https://www.canva.com/"],
+      ["PixelLab", "تعديل الصور وإضافة نصوص ثلاثية الأبعاد.", "https://play.google.com/"],
+      ["Snapseed", "تعديل صور احترافي من قوقل.", "https://snapseed.online/"],
+      ["Picsart Free", "أداة تحرير صور وتصميم مجانية.", "https://picsart.com/"],
+      ["Thumbnail Maker", "قوالب جاهرة لليوتيوب.", "https://play.google.com/"],
+      ["Phonto", "إضافة نصوص واحترافية للصور.", "https://phonto.com/"],
+      ["Background Eraser", "إزالة خلفية الصور بضغطة زر.", "https://play.google.com/"],
+      ["Adobe Express", "تصميم بوسترات وصور سريعة.", "https://www.adobe.com/express/"],
+      ["PhotoRoom Free", "إزالة خلفيات وتصميم منتجات.", "https://www.photoroom.com/"],
+      ["Desygner", "قوالب تصميم جاهزة للتعديل.", "https://desygner.com/"]
+    ],
+    paid: [
+      ["Photoshop Mobile", "ميزات ادوبي المتقدمة للهاتف.", "https://www.adobe.com/"],
+      ["Lightroom Premium", "معالجة ألوان احترافية.", "https://www.adobe.com/"],
+      ["Picsart Gold", "فتح جميع الأدوات والقوالب.", "https://picsart.com/"],
+      ["PhotoRoom Pro", "تصدير بجودة عالية وبدون علامة.", "https://www.photoroom.com/"],
+      ["Canva Pro", "مكتبة عناصر وصور غير محدودة.", "https://www.canva.com/"],
+      ["Pixelcut Pro", "صانع صور مصغرة بالذكاء الاصطناعي.", "https://www.pixelcut.ai/"],
+      ["TouchRetouch", "إزالة الأجسام غير المرغوبة من الصور.", "https://touchretouch.com/"],
+      ["Auto-Retouch Pro", "تحسين جودة الصور تلقائياً.", "https://play.google.com/"],
+      ["Facetune", "تعديل وجوه وتفاصيل الصور.", "https://www.facetuneapp.com/"],
+      ["Bazaart Premium", "تصميم جرافيك ومونتاج صور محترف.", "https://www.bazaart.me/"]
+    ]
+  },
+  editing: {
+    free: [
+      ["CapCut", "أشهر تطبيق مونتاج مجاني ومميز.", "https://www.capcut.com/"],
+      ["VN Editor", "محرر احترافي بدون علامة مائية.", "https://www.vlognow.me/"],
+      ["InShot Free", "تعديل مقاطع سريع للميديا.", "https://inshot.com/"],
+      ["DaVinci Resolve", "برنامج مونتاج وتعديل ألوان سينمائي.", "https://www.blackmagicdesign.com/"],
+      ["Shotcut", "محرر فيديو مجاني ومفتوح المصدر.", "https://shotcut.org/"],
+      ["iMovie", "تعديل فيديو خفيف لأجهزة أبل.", "https://www.apple.com/imovie/"],
+      ["Clipchamp", "محرر سريع مدمج للمتصفح والويندوز.", "https://clipchamp.com/"],
+      ["OpenShot", "برنامج تحرير فيديو سهلة للمبتدئين.", "https://www.openshot.org/"],
+      ["VITA", "تطبيق فيديو بسيط ومباشر.", "https://vita.com/"],
+      ["Splice", "محرر فيديو مجاني وسريع.", "https://spliceapp.com/"]
+    ],
+    paid: [
+      ["Adobe Premiere Pro", "البرنامج الأول عالمياً في المونتاج.", "https://www.adobe.com/"],
+      ["Final Cut Pro", "برنامج المونتاج الأساسي لأجهزة ماك.", "https://www.apple.com/final-cut-pro/"],
+      ["LumaFusion", "أقوى برنامج مونتاج للهواتف والآيباد.", "https://luma-touch.com/lumafusion/"],
+      ["PowerDirector Pro", "تعديل سينمائي ومؤثرات قوية.", "https://www.cyberlink.com/"],
+      ["Filmora Pro", "برنامج تحرير فيديو احترافي وسهل.", "https://filmora.wondershare.com/"],
+      ["Vegas Pro", "برنامج مونتاج فيديو متقدم.", "https://www.vegascreativesoftware.com/"],
+      ["CapCut Pro", "مميزات مساحة سحابية وفلاتر VIP.", "https://www.capcut.com/"],
+      ["Alight Motion Pro", "تحريك وموشن جرافيك مدفوع.", "https://alightmotion.com/"],
+      ["Pinnacle Studio", "برنامج تعديل فيديو احترافي.", "https://www.pinnaclesys.com/"],
+      ["Camtasia", "تصوير الشاشة مع مونتاج شروحات احترافي.", "https://www.techsmith.com/"]
+    ]
+  }
+};
+
+function updateLanguageUI() {
+  const t = uiTexts[currentLang];
+  document.getElementById("subTitle").innerText = t.sub;
+  document.getElementById("devBanner").innerText = t.banner;
+  document.getElementById("selectOsTitle").innerText = t.selectOs;
+  document.getElementById("backToOs").innerText = t.backToOs;
+  document.getElementById("backToFields").innerText = t.backToFields;
+  document.getElementById("noteText").innerText = t.note;
+  document.getElementById("freeLabel").innerText = t.freeLabel;
+  document.getElementById("paidLabel").innerText = t.paidLabel;
+  document.getElementById("footerText").innerText = t.footer;
+  
+  // ضبط اتجاه الصفحة حسب اللغة
+  if (currentLang === "ar") {
+    document.documentElement.dir = "rtl";
+    document.documentElement.lang = "ar";
+  } else {
+    document.documentElement.dir = "ltr";
+    document.documentElement.lang = currentLang;
+  }
+
+  renderOsList();
+  if (selectedOs) renderFieldsList();
+  if (selectedField) loadAppsData();
+}
+
+function renderOsList() {
+  const t = uiTexts[currentLang];
+  const list = systemsData[currentLang];
+  const osList = document.getElementById("osList");
+  osList.innerHTML = list.map(s => `
+    <button class="category" onclick="selectOs('${s.id}', '${s.title}')">
+      <div class="icon">${s.icon}</div>
+      <div class="title">${s.title}</div>
+      <div class="desc">${t.osDesc}</div>
+    </button>
+  `).join("");
+}
+
+function selectOs(id, title) {
+  selectedOs = id;
+  document.getElementById("osTitle").innerText = title;
+  document.getElementById("osPage").classList.add("hidden");
+  document.getElementById("fieldsPage").classList.remove("hidden");
+  renderFieldsList();
+}
+
+function renderFieldsList() {
+  const t = uiTexts[currentLang];
+  const list = fieldsData[currentLang];
+  const fieldsList = document.getElementById("fieldsList");
+  fieldsList.innerHTML = list.map(f => `
+    <button class="category" onclick="selectField('${f.id}', '${f.title}')">
+      <div class="icon">${f.icon}</div>
+      <div class="title">${f.title}</div>
+      <div class="desc">${t.fieldDesc}</div>
+    </button>
+  `).join("");
+}
+
+function selectField(fieldId, fieldTitle) {
+  selectedField = fieldId;
+  document.getElementById("fieldTitle").innerText = fieldTitle;
+  document.getElementById("fieldsPage").classList.add("hidden");
+  document.getElementById("appsPage").classList.remove("hidden");
+  loadAppsData();
+}
+
+function loadAppsData() {
+  const data = sampleApps[selectedField] || sampleApps.thumbnails;
+  renderList("freeList", data.free);
+  renderList("paidList", data.paid);
+}
+
+function renderList(elementId, items) {
+  const t = uiTexts[currentLang];
+  const container = document.getElementById(elementId);
+  container.innerHTML = items.map(item => `
+    <div class="card">
+      <div class="app">${item[0]}</div>
+      <div class="desc">${item[1]}</div>
+      <a href="${item[2]}" target="_blank" class="visit">${t.visit}</a>
+    </div>
+  `).join("");
+}
+
+// أزرار العودة
+document.getElementById("backToOs").onclick = () => {
+  document.getElementById("fieldsPage").classList.add("hidden");
+  document.getElementById("osPage").classList.remove("hidden");
+  selectedOs = null;
+};
+
+document.getElementById("backToFields").onclick = () => {
+  document.getElementById("appsPage").classList.add("hidden");
+  document.getElementById("fieldsPage").classList.remove("hidden");
+  selectedField = null;
+};
+
+// تغيير اللغة
+document.getElementById("langSelect").onchange = (e) => {
+  currentLang = e.target.value;
+  updateLanguageUI();
+};
+
+// الثيم الداكن
+document.getElementById("themeBtn").onclick = () => {
+  const isDark = document.body.getAttribute("data-theme") === "dark";
+  document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+};
+
+// التشغيل المبدئي
+updateLanguageUI();
+</script>
+</body>
+</html>
+
