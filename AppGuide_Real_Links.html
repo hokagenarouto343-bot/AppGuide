@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087f4e">
+<title>🌿 App Guide</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#eef8f2;color:#123d2b}
+header{background:linear-gradient(135deg,#075a38,#16a866);color:#fff;padding:30px 20px 38px;border-radius:0 0 32px 32px}
+.logo{font-size:30px;font-weight:800}.sub{margin-top:8px;color:#d9f8e8}
+main{max-width:900px;margin:auto;padding:20px}h2{font-size:21px}
+.search{width:100%;padding:15px;border:0;border-radius:15px;font-size:16px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.category{background:#fff;border:0;border-radius:18px;padding:18px;text-align:right;box-shadow:0 4px 15px #0001;cursor:pointer}.icon{font-size:30px}.title{font-weight:bold;font-size:16px;margin-top:8px}.small,.desc{font-size:12px;color:#71867b;margin-top:6px}
+.hidden{display:none}.back{border:0;background:#087f4e;color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.label{text-align:center;font-weight:bold;background:#dff4e8;padding:11px;border-radius:13px;margin-bottom:10px}
+.card{background:#fff;border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 3px 12px #0001}.app{font-weight:bold;font-size:16px}.desc{line-height:1.6}.tag{display:inline-block;background:#edf7f1;color:#087f4e;border-radius:8px;padding:5px 8px;font-size:11px;margin-bottom:10px}
+.visit{display:block;text-align:center;text-decoration:none;background:#087f4e;color:white;border-radius:10px;padding:9px;font-size:13px}
+.note{background:#fff;border-radius:14px;padding:12px;font-size:12px;color:#60786b;margin-bottom:15px}
+footer{text-align:center;color:#769184;font-size:12px;padding:25px}
+@media(max-width:500px){.columns{gap:7px}.category{padding:15px}}
+</style>
+</head>
+<body>
+<header><div class="logo">🌿 App Guide</div><div class="sub">تطبيقات حقيقية وروابط رسمية</div></header>
+<main>
+<section id="homePage">
+<h2>اختر القسم</h2>
+<input id="searchBox" class="search" placeholder="🔎 ابحث عن قسم...">
+<div id="categoryList" class="grid"></div>
+</section>
+<section id="detailsPage" class="hidden">
+<button id="backButton" class="back">‹ العودة للأقسام</button>
+<h2 id="sectionTitle"></h2>
+<div class="note">🔗 الروابط في هذه النسخة توجه إلى المواقع الرسمية للتطبيقات.</div>
+<div class="columns"><div><div class="label">🆓 مجاني / متاح مجانًا</div><div id="freeList"></div></div><div><div class="label">💎 مدفوع / اشتراك</div><div id="paidList"></div></div></div>
+</section>
+<footer>App Guide — نسخة تجريبية</footer>
+</main>
+<script>
+const categories=[
+{icon:"🎬",title:"تطبيقات مونتاج",free:[
+["CapCut","أداة لتحرير الفيديو وصناعة المحتوى.","https://www.capcut.com/"],
+["VN Video Editor","محرر فيديو مع أدوات متعددة.","https://www.vlognow.me/"]],
+paid:[
+["LumaFusion","محرر فيديو احترافي للأجهزة المحمولة.","https://luma-touch.com/lumafusion/"],
+["PowerDirector","أدوات متقدمة لتحرير الفيديو.","https://www.cyberlink.com/products/powerdirector-video-editing-software/overview_en_US.html"]]},
+{icon:"🖼️",title:"صنع صور مصغرة",free:[
+["Canva","تصميم صور مصغرة ومنشورات وقوالب بسهولة.","https://www.canva.com/"],
+["Adobe Express","أدوات وقوالب سريعة للتصميم.","https://www.adobe.com/express/"]],
+paid:[
+["Adobe Photoshop","أدوات احترافية لتحرير وتصميم الصور.","https://www.adobe.com/products/photoshop.html"],
+["Affinity","أدوات احترافية للتصميم والصور.","https://affinity.serif.com/"]]},
+{icon:"🤖",title:"أدوات الذكاء الاصطناعي",free:[
+["ChatGPT","مساعد ذكي للكتابة والتعلم والأفكار.","https://chatgpt.com/"],
+["Microsoft Copilot","مساعد ذكاء اصطناعي من Microsoft.","https://copilot.microsoft.com/"]],
+paid:[
+["Adobe Firefly","أدوات إنشاء وتحرير بالذكاء الاصطناعي.","https://firefly.adobe.com/"],
+["Runway","أدوات لإنشاء المحتوى المرئي بالذكاء الاصطناعي.","https://runwayml.com/"]]},
+{icon:"🎞️",title:"تطبيقات مشاهدة الأفلام",free:[
+["YouTube","منصة لمشاهدة محتوى الفيديو.","https://www.youtube.com/"],
+["Tubi","خدمة مشاهدة مجانية مدعومة بالإعلانات.","https://tubitv.com/"]],
+paid:[
+["Netflix","خدمة بث للأفلام والمسلسلات باشتراك.","https://www.netflix.com/ma/"],
+["Disney+","خدمة بث للأفلام والمسلسلات باشتراك.","https://www.disneyplus.com/"]]},
+{icon:"🎙️",title:"تغيير الصوت",free:[
+["Voloco","تسجيل ومعالجة الصوت ومؤثرات صوتية.","https://voloco.com/"],
+["BandLab","تسجيل وإنشاء ومعالجة الموسيقى والصوت.","https://www.bandlab.com/"]],
+paid:[
+["iZotope","أدوات احترافية لمعالجة الصوت.","https://www.izotope.com/"],
+["Antares Auto-Tune","أدوات احترافية لمعالجة الصوت وتصحيح النغمات.","https://www.antarestech.com/"]]}
+];
+
+const homePage=document.getElementById("homePage"), detailsPage=document.getElementById("detailsPage");
+const categoryList=document.getElementById("categoryList"), searchBox=document.getElementById("searchBox");
+const sectionTitle=document.getElementById("sectionTitle"), freeList=document.getElementById("freeList"), paidList=document.getElementById("paidList");
+function render(list){categoryList.innerHTML="";list.forEach(c=>{const b=document.createElement("button");b.className="category";b.innerHTML=`<div class="icon">${c.icon}</div><div class="title">${c.title}</div><div class="small">تطبيقات حقيقية</div>`;b.onclick=()=>openCategory(categories.indexOf(c));categoryList.appendChild(b)})}
+function cards(list){return list.map(x=>`<div class="card"><div class="app">${x[0]}</div><div class="desc">${x[1]}</div><span class="tag">رابط رسمي</span><a class="visit" href="${x[2]}" target="_blank" rel="noopener">زيارة الموقع الرسمي ↗</a></div>`).join("")}
+function openCategory(i){const c=categories[i];sectionTitle.textContent=c.icon+" "+c.title;freeList.innerHTML=cards(c.free);paidList.innerHTML=cards(c.paid);homePage.classList.add("hidden");detailsPage.classList.remove("hidden");scrollTo(0,0)}
+function goHome(){detailsPage.classList.add("hidden");homePage.classList.remove("hidden");scrollTo(0,0)}
+document.getElementById("backButton").onclick=goHome;
+searchBox.oninput=()=>{const q=searchBox.value.trim().toLowerCase();render(categories.filter(c=>c.title.toLowerCase().includes(q)))};
+render(categories);
+</script>
+</body>
+</html>
